@@ -1,0 +1,11 @@
+{
+  "label": "Thành phần Agent",
+  "position": 20,
+  "link": {
+    "type": "generated-index",
+    "description": "Tài liệu tham chiếu đầy đủ cho các thành phần agent của RAGFlow."
+  },
+  "customProps": {
+    "categoryIcon": "RagAiAgent"
+  }
+}

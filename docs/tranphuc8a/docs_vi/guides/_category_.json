@@ -1,0 +1,11 @@
+{
+  "label": "Hướng dẫn",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn cho người dùng và nhà phát triển RAGFlow."
+  },
+  "customProps": {
+    "sidebarIcon": "LucideBookMarked"
+  }
+}

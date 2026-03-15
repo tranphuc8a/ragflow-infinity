@@ -1,0 +1,11 @@
+{
+  "label": "Thực tiễn tốt nhất",
+  "position": 19,
+  "link": {
+    "type": "generated-index",
+    "description": "Các thực tiễn tốt nhất khi cấu hình tập dữ liệu."
+  },
+  "customProps": {
+    "categoryIcon": "LucideStar"
+  }
+}

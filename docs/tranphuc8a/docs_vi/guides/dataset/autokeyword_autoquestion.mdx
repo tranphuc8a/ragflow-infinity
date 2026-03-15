@@ -1,0 +1,74 @@
+---
+sidebar_position: 3
+slug: /autokeyword_autoquestion
+sidebar_custom_props: {
+  categoryIcon: LucideSlidersHorizontal
+}
+---
+# Auto-keyword Auto-question
+import APITable from '@site/src/components/APITable';
+
+Sử dụng mô hình chat để tạo từ khóa hoặc câu hỏi từ mỗi đoạn trong tập dữ liệu.
+
+---
+
+Khi chọn phương pháp phân đoạn, bạn cũng có thể bật tính năng tạo từ khóa tự động hoặc câu hỏi tự động để tăng tỷ lệ truy xuất. Tính năng này sử dụng một mô hình chat để tạo ra số lượng từ khóa và câu hỏi được chỉ định từ mỗi đoạn được tạo, tạo ra "lớp thông tin bổ sung" từ nội dung gốc.
+
+:::caution CẢNH BÁO
+Bật tính năng này làm tăng thời gian lập chỉ mục tài liệu và sử dụng thêm token, vì tất cả các đoạn được tạo sẽ được gửi đến mô hình chat để tạo từ khóa hoặc câu hỏi.
+:::
+
+## Auto-keyword là gì?
+
+Auto-keyword là tính năng tạo từ khóa tự động của RAGFlow. Nó sử dụng mô hình chat để tạo ra một tập hợp từ khóa hoặc từ đồng nghĩa từ mỗi đoạn để sửa lỗi và nâng cao độ chính xác truy xuất. Tính năng này được triển khai như một thanh trượt trong phần **Page rank** trên trang **Configuration** của tập dữ liệu.
+
+**Giá trị**:
+
+- 0: (Mặc định) Tắt.
+- Từ 3 đến 5 (bao gồm): Khuyến nghị nếu bạn có các đoạn khoảng 1.000 ký tự.
+- 30 (tối đa)
+
+:::tip LƯU Ý
+- Nếu kích thước đoạn của bạn tăng lên, bạn có thể tăng giá trị tương ứng. Lưu ý rằng khi giá trị tăng, lợi ích biên giảm.
+- Giá trị Auto-keyword phải là số nguyên. Nếu bạn đặt giá trị không phải số nguyên, ví dụ 1.7, nó sẽ được làm tròn xuống số nguyên gần nhất, trong trường hợp này là 1.
+:::
+
+## Auto-question là gì?
+
+Auto-question là tính năng của RAGFlow tự động tạo câu hỏi từ các đoạn dữ liệu sử dụng mô hình chat. Những câu hỏi này (ví dụ: ai, cái gì và tại sao) cũng giúp sửa lỗi và cải thiện việc khớp với truy vấn của người dùng. Tính năng thường hoạt động trong các kịch bản truy xuất FAQ liên quan đến hướng dẫn sản phẩm hoặc tài liệu chính sách. Và bạn có thể tìm thấy tính năng này dưới dạng thanh trượt trong phần **Page rank** trên trang **Configuration** của tập dữ liệu.
+
+**Giá trị**:
+
+- 0: (Mặc định) Tắt.
+- 1 hoặc 2: Khuyến nghị nếu bạn có các đoạn khoảng 1.000 ký tự.
+- 10 (tối đa)
+
+:::tip LƯU Ý
+- Nếu kích thước đoạn của bạn tăng lên, bạn có thể tăng giá trị tương ứng. Lưu ý rằng khi giá trị tăng, lợi ích biên giảm.
+- Giá trị Auto-question phải là số nguyên. Nếu bạn đặt giá trị không phải số nguyên, ví dụ 1.7, nó sẽ được làm tròn xuống số nguyên gần nhất, trong trường hợp này là 1.
+:::
+
+## Lời khuyên từ cộng đồng
+
+Các giá trị Auto-keyword hoặc Auto-question liên quan chặt chẽ đến kích thước phân đoạn trong tập dữ liệu của bạn. Tuy nhiên, nếu bạn mới sử dụng tính năng này và không chắc chắn nên bắt đầu với giá trị nào, sau đây là một số cài đặt giá trị chúng tôi thu thập từ cộng đồng. Mặc dù chúng có thể không chính xác, nhưng ít nhất cũng cung cấp điểm khởi đầu.
+
+```mdx-code-block
+<APITable>
+```
+
+| Trường hợp sử dụng hoặc kịch bản điển hình                           | Dung lượng/độ dài tài liệu     | Auto_keyword (0–30)             | Auto_question (0–10)            |
+|-----------------------------------------------------------------------|----------------------------------|---------------------------------|---------------------------------|
+| Hướng dẫn quy trình nội bộ cho sổ tay nhân viên                      | Nhỏ, dưới 10 trang              | 0                               | 0                               |
+| FAQ chăm sóc khách hàng                                               | Vừa, 10–100 trang               | 3–7                             | 1–3                             |
+| Sách trắng kỹ thuật: Tiêu chuẩn phát triển, chi tiết giao thức       | Lớn, hơn 100 trang              | 2–4                             | 1–2                             |
+| Hợp đồng / Quy định / Truy xuất điều khoản pháp lý                   | Lớn, hơn 50 trang               | 2–5                             | 0–1                             |
+| Tài liệu mới nhiều kho + lưu trữ cũ                                   | Nhiều                           | Điều chỉnh phù hợp              | Điều chỉnh phù hợp              |
+| Pool bình luận mạng xã hội: đa ngôn ngữ & chính tả hỗn hợp           | Khối lượng lớn văn bản ngắn    | 8–12                            | 0                               |
+| Log vận hành để xử lý sự cố                                           | Khối lượng lớn văn bản ngắn    | 3–6                             | 0                               |
+| Thư viện tài sản marketing: mô tả sản phẩm đa ngôn ngữ              | Vừa                             | 6–10                            | 1–2                             |
+| Khóa học đào tạo / eBook                                              | Lớn                             | 2–5                             | 1–2                             |
+| Hướng dẫn bảo trì: sơ đồ thiết bị + các bước                        | Vừa                             | 3–7                             | 1–2                             |
+
+```mdx-code-block
+</APITable>
+```

@@ -1,0 +1,18 @@
+---
+sidebar_position: 1
+slug: /accelerate_doc_indexing
+---
+
+# Tăng tốc lập chỉ mục
+import APITable from '@site/src/components/APITable';
+
+Danh sách kiểm tra để tăng tốc độ phân tích và lập chỉ mục tài liệu.
+
+---
+
+Lưu ý rằng một số cài đặt của bạn có thể tiêu tốn nhiều thời gian đáng kể. Nếu bạn thường xuyên thấy việc phân tích tài liệu mất nhiều thời gian, đây là danh sách kiểm tra để cân nhắc:
+
+- Trên trang cấu hình của tập dữ liệu, tắt **Use RAPTOR to enhance retrieval**.
+- Trích xuất đồ thị tri thức (GraphRAG) rất tốn thời gian.
+- Tắt **Auto-keyword** và **Auto-question** trên trang cấu hình của tập dữ liệu, vì cả hai đều phụ thuộc vào LLM.
+- **v0.17.0+:** Nếu tất cả các tệp PDF trong tập dữ liệu của bạn là văn bản thuần túy và không yêu cầu các quy trình tốn nhiều GPU như OCR (Nhận dạng ký tự quang học), TSR (Nhận dạng cấu trúc bảng) hoặc DLA (Phân tích bố cục tài liệu), bạn có thể chọn **Naive** thay vì **DeepDoc** hoặc các tùy chọn mô hình lớn tốn thời gian khác trong menu thả xuống **Document parser**. Điều này sẽ giảm đáng kể thời gian phân tích tài liệu.

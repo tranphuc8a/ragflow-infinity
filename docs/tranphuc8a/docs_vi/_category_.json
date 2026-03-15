@@ -1,0 +1,8 @@
+{
+  "label": "Bắt đầu",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Bắt đầu nhanh với RAGFlow"
+  }
+}

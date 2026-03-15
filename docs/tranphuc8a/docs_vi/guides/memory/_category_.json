@@ -1,0 +1,11 @@
+{
+  "label": "Bộ nhớ",
+  "position": 10,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn sử dụng Bộ nhớ."
+  },
+  "customProps": {
+    "categoryIcon": "LucideBox"
+  }
+}

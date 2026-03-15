@@ -1,0 +1,76 @@
+---
+sidebar_position: 8
+slug: /categorize_component
+sidebar_custom_props: {
+  categoryIcon: LucideSwatchBook
+}
+---
+# Thành phần Categorize
+
+Một thành phần phân loại đầu vào người dùng và áp dụng chiến lược tương ứng.
+
+---
+
+Thành phần **Categorize** thường đặt downstream của **Interact**.
+
+## Kịch bản sử dụng
+
+**Categorize** cần thiết khi bạn muốn LLM hỗ trợ xác định ý định người dùng và áp dụng chiến lược xử lý phù hợp.
+
+## Cấu hình
+
+### Query variables
+
+*Bắt buộc*
+
+Chọn nguồn dùng để phân loại.
+
+### Input
+
+Thành phần **Categorize** dùng biến đầu vào để chỉ định dữ liệu truy vấn. Nhấp **+ Add variable** để thêm biến. Có hai loại: **Reference** và **Text**.
+
+- **Reference**: Dùng đầu ra thành phần hoặc đầu vào người dùng.
+- **Text**: Dùng văn bản tĩnh.
+
+### Model
+
+Trong menu **Model**, bạn có thể cấu hình:
+
+- **Model**: Mô hình chat sử dụng.
+- **Creativity**: Preset cho `Temperature`, `Top P`, `Presence penalty`, `Frequency penalty` với 3 mức:
+  - **Improvise**
+  - **Precise** (mặc định)
+  - **Balance**
+- **Temperature**: Mức ngẫu nhiên đầu ra (mặc định 0.1).
+- **Top P**: Nucleus sampling (mặc định 0.3).
+- **Presence penalty**: Khuyến khích đa dạng token (mặc định 0.4).
+- **Frequency penalty**: Giảm lặp từ/cụm từ (mặc định 0.7).
+- **Max tokens**: Độ dài tối đa đầu ra mô hình (mặc định tắt).
+
+### Message window size
+
+Số vòng hội thoại trước đó đưa vào LLM. Ví dụ đặt 12 thì token của 12 vòng gần nhất sẽ được đưa vào. Mặc định 1.
+
+:::tip QUAN TRỌNG
+Tính năng này chỉ dùng cho hội thoại nhiều lượt. Nếu **Categorize** không nằm trong vòng lặp, hãy để nguyên giá trị mặc định.
+:::
+
+### Category name
+
+**Categorize** phải có ít nhất hai danh mục. Nhấp **+ Add Item** để thêm danh mục.
+
+#### Description
+
+Mô tả danh mục, có thể đưa tiêu chí/tình huống giúp LLM phân loại.
+
+#### Examples
+
+Ví dụ bổ sung giúp LLM quyết định đầu vào thuộc danh mục nào.
+
+:::danger QUAN TRỌNG
+Nếu bạn muốn LLM phân loại đúng các trường hợp cụ thể, ví dụ thường hữu ích hơn mô tả.
+:::
+
+### Output
+
+Tên biến toàn cục cho đầu ra thành phần, có thể được thành phần khác tham chiếu. Mặc định `category_name`.

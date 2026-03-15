@@ -1,0 +1,225 @@
+---
+sidebar_position: 13
+slug: /code_component
+sidebar_custom_props: {
+  categoryIcon: LucideCodeXml
+}
+---
+# Thành phần Code
+
+Thành phần cho phép người dùng tích hợp các đoạn mã Python hoặc JavaScript vào Agent để xử lý dữ liệu động.
+
+---
+
+## Kịch bản
+
+Thành phần **Code** là thiết yếu khi bạn cần tích hợp logic mã phức tạp (Python hoặc JavaScript) vào Agent để xử lý dữ liệu động.
+
+## Điều kiện tiên quyết
+
+### 1. Đảm bảo gVisor được cài đặt đúng cách
+
+Chúng tôi sử dụng gVisor để cô lập thực thi mã khỏi hệ thống host. Vui lòng làm theo [hướng dẫn cài đặt chính thức](https://gvisor.dev/docs/user_guide/install/) để cài đặt gVisor, đảm bảo hệ điều hành của bạn tương thích trước khi tiếp tục.
+
+### 2. Đảm bảo Sandbox được cài đặt đúng cách
+
+RAGFlow Sandbox là một backend thực thi mã an toàn, có thể cắm vào. Nó đóng vai trò là trình thực thi mã cho thành phần **Code**. Vui lòng làm theo [hướng dẫn tại đây](https://github.com/infiniflow/ragflow/tree/main/sandbox) để cài đặt RAGFlow Sandbox.
+
+:::note Phiên bản Docker client
+Image executor manager hiện đi kèm với Docker CLI `29.1.0` (API 1.44+). Các image cũ hơn đi kèm Docker 24.x và sẽ thất bại khi dùng với Docker daemon mới hơn với lỗi `client version 1.43 is too old`. Hãy kéo `infiniflow/sandbox-executor-manager:latest` mới nhất hoặc build lại trong `./sandbox/executor_manager` nếu bạn gặp lỗi này.
+:::
+
+:::tip LƯU Ý
+Nếu RAGFlow Sandbox của bạn không hoạt động, hãy chắc chắn tham khảo phần [Xử lý sự cố](#troubleshooting) trong tài liệu này. Chúng tôi đảm bảo rằng nó giải quyết 99,99% vấn đề!
+:::
+
+### 3. (Tùy chọn) Cài đặt các phụ thuộc cần thiết
+
+Nếu bạn cần nhập các gói Python hoặc JavaScript của riêng mình vào Sandbox, vui lòng làm theo các lệnh được cung cấp trong phần [Cách nhập gói Python hoặc JavaScript của riêng tôi vào Sandbox?](#how-to-import-my-own-python-or-javascript-packages-into-sandbox) để cài đặt các phụ thuộc bổ sung.
+
+### 4. Bật các cài đặt dành riêng cho Sandbox trong RAGFlow
+
+Đảm bảo tất cả các cài đặt dành riêng cho Sandbox được bật trong **ragflow/docker/.env**.
+
+### 5. Khởi động lại dịch vụ sau khi thực hiện thay đổi
+
+Bất kỳ thay đổi nào đối với cấu hình hoặc môi trường *đều yêu cầu* khởi động lại dịch vụ hoàn toàn để có hiệu lực.
+
+## Cấu hình
+
+### Input
+
+Bạn có thể chỉ định nhiều nguồn đầu vào cho thành phần **Code**. Nhấp vào **+ Add variable** trong phần **Input variables** để bao gồm các biến đầu vào mong muốn.
+
+### Code
+
+Trường này cho phép bạn nhập và chỉnh sửa mã nguồn.
+
+:::danger QUAN TRỌNG
+Nếu việc triển khai mã của bạn bao gồm các biến đã xác định, dù là biến đầu vào hay đầu ra, hãy đảm bảo chúng cũng được chỉ định trong các phần **Input** hoặc **Output** tương ứng.
+:::
+
+#### Ví dụ mã Python
+
+```Python 
+    def main(arg1: str, arg2: str) -> dict:
+        return {
+            "result": arg1 + arg2,
+        }
+```
+
+#### Ví dụ mã JavaScript
+
+```JavaScript
+
+    const axios = require('axios');
+    async function main(args) {
+      try {
+        const response = await axios.get('https://github.com/infiniflow/ragflow');
+        console.log('Body:', response.data);
+      } catch (error) {
+        console.error('Error:', error.message);
+      }
+    }
+```
+
+### Return values
+
+Bạn xác định (các) biến đầu ra của thành phần **Code** ở đây.
+
+:::danger QUAN TRỌNG
+Nếu bạn xác định các biến đầu ra ở đây, hãy đảm bảo chúng cũng được xác định trong triển khai mã của bạn; nếu không, giá trị của chúng sẽ là `null`. Sau đây là hai ví dụ:
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/set_object_output.jpg)
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/set_nested_object_output.png)
+:::
+
+### Output
+
+Các biến đầu ra đã xác định sẽ được tự động điền ở đây.
+
+## Xử lý sự cố {#troubleshooting}
+
+### `HTTPConnectionPool(host='sandbox-executor-manager', port=9385): Read timed out.`
+
+**Nguyên nhân gốc rễ**
+
+- Bạn chưa cài đặt đúng gVisor và `runsc` không được nhận dạng là runtime Docker hợp lệ.
+- Bạn chưa kéo các image cơ sở cần thiết cho các runner và không có runner nào được khởi động.
+
+**Giải pháp**
+
+Đối với vấn đề gVisor:
+
+1. Cài đặt [gVisor](https://gvisor.dev/docs/user_guide/install/).
+2. Khởi động lại Docker.
+3. Chạy lệnh sau để kiểm tra lại:
+
+   ```bash
+   docker run --rm --runtime=runsc hello-world
+   ```
+
+Đối với vấn đề image cơ sở, hãy kéo các image cơ sở cần thiết:
+
+```bash
+docker pull infiniflow/sandbox-base-nodejs:latest
+docker pull infiniflow/sandbox-base-python:latest
+```
+
+### `docker: Error response from daemon: client version 1.43 is too old. Minimum supported API version is 1.44`
+
+**Nguyên nhân gốc rễ**
+
+Image executor manager của bạn bao gồm Docker CLI 24.x (API 1.43), nhưng Docker daemon trên máy chủ, ví dụ Docker 25+ / 29.x, hiện yêu cầu API 1.44+.
+
+**Giải pháp**
+
+Kéo image executor manager mới nhất hoặc build lại trong `./sandbox/executor_manager` để nâng cấp Docker client tích hợp:
+
+```bash
+docker pull infiniflow/sandbox-executor-manager:latest
+# hoặc
+docker build -t sandbox-executor-manager:latest ./sandbox/executor_manager
+```
+
+### `HTTPConnectionPool(host='none', port=9385): Max retries exceeded.`
+
+**Nguyên nhân gốc rễ**
+
+`sandbox-executor-manager` không được ánh xạ trong `/etc/hosts`.
+
+**Giải pháp**
+
+Thêm một mục mới vào `/etc/hosts`:
+
+`127.0.0.1 es01 infinity mysql minio redis sandbox-executor-manager`
+
+### `Container pool is busy`
+
+**Nguyên nhân gốc rễ**
+
+Tất cả các runner hiện đang được sử dụng để thực thi các tác vụ.
+
+**Giải pháp**
+
+Vui lòng thử lại sau hoặc tăng kích thước pool trong cấu hình để cải thiện tính khả dụng và giảm thời gian chờ.
+
+## Câu hỏi thường gặp
+
+### Cách nhập gói Python hoặc JavaScript của riêng tôi vào Sandbox? {#how-to-import-my-own-python-or-javascript-packages-into-sandbox}
+
+Để nhập các gói Python của bạn, hãy cập nhật **sandbox_base_image/python/requirements.txt** để cài đặt các phụ thuộc cần thiết. Ví dụ, để thêm gói `openpyxl`, tiến hành với các dòng lệnh sau:
+
+```bash {4,6}
+(ragflow) ➜ ragflow/sandbox main ✓ pwd # đảm bảo bạn đang ở đúng thư mục
+/home/infiniflow/workspace/ragflow/sandbox
+
+(ragflow) ➜ ragflow/sandbox main ✓ echo "openpyxl" >> sandbox_base_image/python/requirements.txt # thêm gói vào file requirements.txt
+
+(ragflow) ➜ ragflow/sandbox main ✗ cat sandbox_base_image/python/requirements.txt # đảm bảo gói đã được thêm
+numpy
+pandas
+requests
+openpyxl # đây rồi
+
+(ragflow) ➜ ragflow/sandbox main ✗ make # build lại docker image, lệnh này sẽ build lại image và khởi động dịch vụ ngay lập tức. Để chỉ build image, sử dụng `make build`.
+
+(ragflow) ➜ ragflow/sandbox main ✗ docker exec -it sandbox_python_0 /bin/bash # vào container để kiểm tra gói đã được cài đặt
+
+
+# trong container
+nobody@ffd8a7dd19da:/workspace$ python # khởi động Python shell
+Python 3.11.13 (main, Aug 12 2025, 22:46:03) [GCC 12.2.0] on linux
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import openpyxl # nhập gói để xác minh cài đặt
+>>>
+# Ổn rồi!
+```
+
+Để nhập các gói JavaScript của bạn, điều hướng đến `sandbox_base_image/nodejs` và sử dụng `npm` để cài đặt các gói cần thiết. Ví dụ, để thêm gói `lodash`, chạy các lệnh sau:
+
+```bash
+(ragflow) ➜ ragflow/sandbox main ✓ pwd
+/home/infiniflow/workspace/ragflow/sandbox
+
+(ragflow) ➜ ragflow/sandbox main ✓ cd sandbox_base_image/nodejs
+
+(ragflow) ➜ ragflow/sandbox/sandbox_base_image/nodejs main ✓ npm install lodash 
+
+(ragflow) ➜ ragflow/sandbox/sandbox_base_image/nodejs main ✓ cd ../.. # quay lại thư mục root sandbox
+
+(ragflow) ➜ ragflow/sandbox main ✗ make # build lại docker image, lệnh này sẽ build lại image và khởi động dịch vụ ngay lập tức. Để chỉ build image, sử dụng `make build`.
+
+(ragflow) ➜ ragflow/sandbox main ✗ docker exec -it sandbox_nodejs_0 /bin/bash # vào container để kiểm tra gói đã được cài đặt
+
+# trong container
+nobody@dd4bbcabef63:/workspace$ npm list lodash # xác minh qua npm list
+/workspace
+`-- lodash@4.17.21 extraneous
+
+nobody@dd4bbcabef63:/workspace$ ls node_modules | grep lodash # hoặc xác minh qua liệt kê node_modules
+lodash
+
+# Ổn rồi!
+```

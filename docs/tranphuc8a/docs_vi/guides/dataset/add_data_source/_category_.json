@@ -1,0 +1,11 @@
+{
+  "label": "Thêm nguồn dữ liệu",
+  "position": 18,
+  "link": {
+    "type": "generated-index",
+    "description": "Thêm các nguồn dữ liệu khác nhau"
+  },
+  "customProps": {
+    "categoryIcon": "LucideServer"
+  }
+}

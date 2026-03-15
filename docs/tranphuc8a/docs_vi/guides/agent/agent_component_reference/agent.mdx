@@ -1,0 +1,232 @@
+---
+sidebar_position: 2
+slug: /agent_component
+sidebar_custom_props: {
+  categoryIcon: RagAiAgent
+}
+---
+# Thành phần Agent
+
+Thành phần được trang bị khả năng lập luận, sử dụng công cụ và cộng tác đa tác nhân.
+
+---
+
+Thành phần **Agent** tinh chỉnh LLM và thiết lập prompt của nó. Từ phiên bản v0.20.5 trở đi, thành phần **Agent** có thể hoạt động độc lập với các khả năng sau:
+
+- Lập luận tự chủ với phản ánh và điều chỉnh dựa trên phản hồi từ môi trường.
+- Sử dụng các công cụ hoặc tác nhân con để hoàn thành nhiệm vụ.
+
+## Kịch bản
+
+Thành phần **Agent** là thiết yếu khi bạn cần LLM hỗ trợ tóm tắt, dịch thuật hoặc kiểm soát các tác vụ khác nhau.
+
+## Điều kiện tiên quyết
+
+1. Đảm bảo bạn đã cấu hình đúng một mô hình chat:
+
+  ![Đặt mô hình mặc định](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/set_default_models.jpg)
+
+2. Nếu Agent của bạn liên quan đến việc truy xuất tập dữ liệu, hãy đảm bảo bạn [đã cấu hình đúng tập dữ liệu mục tiêu của mình](../../dataset/configure_knowledge_base.md).
+
+## Bắt đầu nhanh
+
+### 1. Nhấp vào thành phần **Agent** để hiển thị bảng cấu hình
+
+Bảng cấu hình tương ứng xuất hiện ở bên phải canvas. Sử dụng bảng này để xác định và tinh chỉnh hành vi của thành phần **Agent**.
+
+### 2. Chọn mô hình của bạn
+
+Nhấp vào **Model** và chọn mô hình chat từ menu thả xuống.
+
+:::tip LƯU Ý
+Nếu không có mô hình nào xuất hiện, hãy kiểm tra xem bạn đã thêm mô hình chat trên trang **Model providers** chưa.
+:::
+
+### 3. Cập nhật system prompt (Tùy chọn)
+
+System prompt thường xác định vai trò của mô hình. Bạn có thể giữ nguyên system prompt hoặc tùy chỉnh nó để ghi đè mặc định.
+
+### 4. Cập nhật user prompt
+
+User prompt thường xác định nhiệm vụ của mô hình. Bạn sẽ thấy biến `sys.query` được tự động điền. Gõ `/` hoặc nhấp vào **(x)** để xem hoặc thêm biến.
+
+Trong hướng dẫn bắt đầu nhanh này, chúng ta giả định thành phần **Agent** của bạn được sử dụng độc lập (không có công cụ hoặc Agent con bên dưới), khi đó bạn cũng có thể cần chỉ định các đoạn đã truy xuất bằng biến `formalized_content`:
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/standalone_user_prompt_variable.jpg)
+
+### 5. Bỏ qua Tools và Agent
+
+Các mục **+ Add tools** và **+ Add agent** chỉ được sử dụng khi bạn cần cấu hình thành phần **Agent** của mình như một trình lập kế hoạch (với các công cụ hoặc Agent con bên dưới). Trong hướng dẫn này, chúng ta giả định thành phần **Agent** được sử dụng độc lập.
+
+### 6. Chọn thành phần tiếp theo
+
+Khi cần thiết, nhấp vào nút **+** trên thành phần **Agent** để chọn thành phần tiếp theo trong quy trình từ danh sách thả xuống.
+
+## Kết nối với server MCP như một client
+
+:::danger QUAN TRỌNG
+Trong phần này, chúng ta giả định **Agent** của bạn sẽ được cấu hình như một trình lập kế hoạch, với công cụ Tavily bên dưới.
+:::
+
+### 1. Điều hướng đến trang cấu hình MCP
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/mcp_page.jpg)
+
+### 2. Cấu hình server Tavily MCP của bạn
+
+Cập nhật tên, URL (bao gồm API key), loại server và các cài đặt cần thiết khác cho server MCP của bạn. Khi được cấu hình đúng, các công cụ có sẵn sẽ được hiển thị.
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/edit_mcp_server.jpg)
+
+### 3. Điều hướng đến trang chỉnh sửa Agent của bạn
+
+### 4. Kết nối với server MCP của bạn
+
+1. Nhấp vào **+ Add tools**:
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/add_tools.jpg)
+
+2. Nhấp vào **MCP** để hiển thị các server MCP có sẵn.
+
+3. Chọn server MCP của bạn:
+
+   *Server MCP mục tiêu xuất hiện bên dưới thành phần Agent của bạn, và Agent sẽ tự chủ quyết định khi nào cần gọi các công cụ mà nó cung cấp.*
+
+  ![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/choose_tavily_mcp_server.jpg)
+
+### 5. Cập nhật system prompt để chỉ định điều kiện kích hoạt (Tùy chọn)
+
+Để đảm bảo các lời gọi công cụ đáng tin cậy, bạn có thể chỉ định trong system prompt những nhiệm vụ nào sẽ kích hoạt từng lời gọi công cụ.
+
+### 6. Xem các công cụ có sẵn của server MCP
+
+Trên canvas, nhấp vào server Tavily vừa được thêm vào để xem và chọn các công cụ có sẵn của nó:
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/tavily_mcp_server.jpg)
+
+## Cấu hình
+
+### Model
+
+Nhấp vào menu thả xuống của **Model** để hiển thị cửa sổ cấu hình mô hình.
+
+- **Model**: Mô hình chat cần sử dụng.
+  - Đảm bảo bạn đặt đúng mô hình chat trên trang **Model providers**.
+  - Bạn có thể sử dụng các mô hình khác nhau cho các thành phần khác nhau để tăng tính linh hoạt hoặc cải thiện hiệu suất tổng thể.
+- **Creativity**: Phím tắt đến các cài đặt **Temperature**, **Top P**, **Presence penalty** và **Frequency penalty**, cho biết mức độ tự do của mô hình. Từ **Improvise**, **Precise** đến **Balance**, mỗi cấu hình preset tương ứng với một tổ hợp duy nhất của **Temperature**, **Top P**, **Presence penalty** và **Frequency penalty**.
+  Tham số này có ba tùy chọn:
+  - **Improvise**: Tạo ra các phản hồi sáng tạo hơn.
+  - **Precise**: (Mặc định) Tạo ra các phản hồi bảo thủ hơn.
+  - **Balance**: Mức trung gian giữa **Improvise** và **Precise**.
+- **Temperature**: Mức độ ngẫu nhiên của đầu ra mô hình.
+  Mặc định là 0.1.
+  - Giá trị thấp hơn dẫn đến đầu ra xác định và dự đoán được hơn.
+  - Giá trị cao hơn dẫn đến đầu ra sáng tạo và đa dạng hơn.
+  - Nhiệt độ bằng không dẫn đến cùng một đầu ra cho cùng một prompt.
+- **Top P**: Lấy mẫu Nucleus.
+  - Giảm khả năng tạo ra văn bản lặp hoặc không tự nhiên bằng cách đặt ngưỡng *P* và giới hạn việc lấy mẫu đối với các token có xác suất tích lũy vượt quá *P*.
+  - Mặc định là 0.3.
+- **Presence penalty**: Khuyến khích mô hình bao gồm nhiều loại token hơn trong phản hồi.
+  - Giá trị **presence penalty** cao hơn dẫn đến mô hình có nhiều khả năng tạo ra các token chưa xuất hiện trong văn bản đã tạo.
+  - Mặc định là 0.4.
+- **Frequency penalty**: Ngăn chặn mô hình lặp lại cùng các từ hoặc cụm từ quá thường xuyên.
+  - Giá trị **frequency penalty** cao hơn dẫn đến mô hình bảo thủ hơn trong việc sử dụng các token lặp lại.
+  - Mặc định là 0.7.
+- **Max tokens**:
+  Đặt độ dài tối đa của đầu ra mô hình, tính bằng số token (từ hoặc phần của từ). Mặc định bị vô hiệu hóa, cho phép mô hình tự xác định số lượng token trong phản hồi.
+
+:::tip LƯU Ý
+- Không nhất thiết phải sử dụng cùng một mô hình cho tất cả các thành phần. Nếu một mô hình cụ thể không hoạt động tốt cho một nhiệm vụ cụ thể, hãy xem xét sử dụng mô hình khác.
+- Nếu bạn không chắc chắn về cơ chế của **Temperature**, **Top P**, **Presence penalty** và **Frequency penalty**, hãy đơn giản chọn một trong ba tùy chọn của **Creativity**.
+:::
+
+### System prompt
+
+Thông thường, bạn sử dụng system prompt để mô tả nhiệm vụ cho LLM, chỉ định cách nó nên phản hồi và nêu ra các yêu cầu khác. Chúng tôi không có kế hoạch chi tiết về chủ đề này, vì nó có thể rộng như kỹ thuật prompt. Tuy nhiên, hãy lưu ý rằng system prompt thường được sử dụng kết hợp với các khóa (biến), hoạt động như các đầu vào dữ liệu khác nhau cho LLM.
+
+Thành phần **Agent** dựa vào các khóa (biến) để chỉ định các đầu vào dữ liệu của nó. Thành phần ngay phía trên nó *không nhất thiết* là đầu vào dữ liệu của nó, và các mũi tên trong quy trình chỉ cho biết *thứ tự xử lý*. Các khóa trong thành phần **Agent** được sử dụng kết hợp với system prompt để chỉ định đầu vào dữ liệu cho LLM. Sử dụng dấu gạch chéo `/` hoặc nút **(x)** để hiển thị các khóa cần sử dụng.
+
+#### Sử dụng nâng cao
+
+Từ phiên bản v0.20.5 trở đi, bốn khối prompt ở cấp độ framework có sẵn trong trường **System prompt**, cho phép bạn tùy chỉnh và *ghi đè* các prompt ở cấp độ framework. Gõ `/` hoặc nhấp vào **(x)** để xem chúng; chúng xuất hiện trong mục **Framework** của menu thả xuống.
+
+- Khối prompt `task_analysis`
+  - Khối này chịu trách nhiệm phân tích các nhiệm vụ — có thể là nhiệm vụ của người dùng hoặc nhiệm vụ được giao bởi Agent trưởng khi thành phần **Agent** đóng vai trò là Agent con.
+  - Thiết kế tham chiếu: [analyze_task_system.md](https://github.com/infiniflow/ragflow/blob/main/rag/prompts/analyze_task_system.md) và [analyze_task_user.md](https://github.com/infiniflow/ragflow/blob/main/rag/prompts/analyze_task_user.md)
+  - Chỉ khả dụng khi thành phần **Agent** này đóng vai trò là trình lập kế hoạch, với công cụ hoặc Agent con bên dưới nó.
+  - Các biến đầu vào:
+    - `agent_prompt`: System prompt.
+    - `task`: User prompt cho cả Agent trưởng hoặc Agent con. User prompt của Agent trưởng được xác định bởi người dùng, trong khi user prompt của Agent con được xác định bởi Agent trưởng khi ủy thác nhiệm vụ.
+    - `tool_desc`: Mô tả về các công cụ và tác nhân con có thể được gọi.
+    - `context`: Bối cảnh hoạt động, lưu trữ các tương tác giữa Agent, công cụ và tác nhân con; ban đầu trống.
+- Khối prompt `plan_generation`
+  - Khối này tạo ra một kế hoạch cho thành phần **Agent** thực thi tiếp theo, dựa trên kết quả phân tích nhiệm vụ.
+  - Thiết kế tham chiếu: [next_step.md](https://github.com/infiniflow/ragflow/blob/main/rag/prompts/next_step.md)
+  - Chỉ khả dụng khi thành phần **Agent** này đóng vai trò là trình lập kế hoạch, với công cụ hoặc Agent con bên dưới nó.
+  - Các biến đầu vào:
+    - `task_analysis`: Kết quả phân tích nhiệm vụ hiện tại.
+    - `desc`: Mô tả về công cụ hoặc Agent con hiện đang được gọi.
+    - `today`: Ngày hôm nay.
+- Khối prompt `reflection`
+  - Khối này cho phép thành phần **Agent** phản ánh, cải thiện độ chính xác và hiệu quả của nhiệm vụ.
+  - Thiết kế tham chiếu: [reflect.md](https://github.com/infiniflow/ragflow/blob/main/rag/prompts/reflect.md)
+  - Chỉ khả dụng khi thành phần **Agent** này đóng vai trò là trình lập kế hoạch, với công cụ hoặc Agent con bên dưới nó.
+  - Các biến đầu vào:
+    - `goal`: Mục tiêu của nhiệm vụ hiện tại. Là user prompt cho cả Agent trưởng hoặc Agent con. User prompt của Agent trưởng được xác định bởi người dùng, trong khi user prompt của Agent con được xác định bởi Agent trưởng.
+    - `tool_calls`: Lịch sử gọi công cụ.
+    - `call.name`：Tên của công cụ được gọi.
+    - `call.result`：Kết quả của lời gọi công cụ.
+- Khối prompt `citation_guidelines`
+  - Thiết kế tham chiếu: [citation_prompt.md](https://github.com/infiniflow/ragflow/blob/main/rag/prompts/citation_prompt.md)
+
+*Các ảnh chụp màn hình bên dưới cho thấy các khối prompt framework có sẵn cho thành phần **Agent**, cả khi dùng độc lập và khi là trình lập kế hoạch (với công cụ Tavily bên dưới):*
+
+![standalone](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/standalone_agent_framework_block.jpg)
+
+![planner](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/planner_agent_framework_blocks.jpg)
+
+### User prompt
+
+Prompt do người dùng xác định. Mặc định là `sys.query`, truy vấn của người dùng. Theo nguyên tắc chung, khi sử dụng thành phần **Agent** như một mô-đun độc lập (không phải là trình lập kế hoạch), bạn thường cần chỉ định biến đầu ra (`formalized_content`) của thành phần **Retrieval** tương ứng ở đây như một phần của đầu vào cho LLM.
+
+### Tools
+
+Bạn có thể sử dụng thành phần **Agent** như một cộng tác viên lập luận và phản ánh với sự hỗ trợ của các công cụ khác; ví dụ, **Retrieval** có thể là một trong những công cụ như vậy cho **Agent**.
+
+### Agent
+
+Bạn sử dụng thành phần **Agent** như một cộng tác viên lập luận và phản ánh với sự hỗ trợ của các tác nhân con hoặc công cụ khác, tạo thành một hệ thống đa tác nhân.
+
+### Message window size
+
+Một số nguyên xác định số lượng vòng hội thoại trước đó để đưa vào LLM. Ví dụ, nếu được đặt là 12, các token từ 12 vòng hội thoại cuối cùng sẽ được cung cấp cho LLM. Tính năng này tiêu thụ thêm token.
+
+:::tip QUAN TRỌNG
+Tính năng này chỉ dành cho hội thoại đa lượt.
+:::
+
+### Max retries
+
+Xác định số lần thử lại tối đa mà agent sẽ thực hiện để thử lại một nhiệm vụ hoặc thao tác thất bại trước khi dừng hoặc báo lỗi.
+
+### Delay after error
+
+Thời gian chờ tính bằng giây mà agent tuân thủ trước khi thử lại một nhiệm vụ thất bại, giúp ngăn chặn các lần thử lại ngay lập tức và cho phép điều kiện hệ thống cải thiện. Mặc định là 1 giây.
+
+### Max reflection rounds
+
+Xác định số vòng phản ánh tối đa của mô hình chat được chọn. Mặc định là 1 vòng.
+
+:::tip LƯU Ý
+Tăng giá trị này sẽ kéo dài đáng kể thời gian phản hồi của agent.
+:::
+
+### Output
+
+Tên biến toàn cục cho đầu ra của thành phần **Agent**, có thể được tham chiếu bởi các thành phần khác trong quy trình.
+
+## Câu hỏi thường gặp
+
+### Tại sao Agent của tôi mất nhiều thời gian để phản hồi?
+
+Xem [tại đây](../best_practices/accelerate_agent_question_answering.md) để biết chi tiết.

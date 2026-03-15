@@ -1,0 +1,358 @@
+---
+sidebar_position: 0
+slug: /
+sidebar_custom_props: {
+  sidebarIcon: LucideRocket
+}
+---
+# Bắt đầu nhanh
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+import APITable from '@site/src/components/APITable';
+
+RAGFlow là một engine RAG (Truy xuất-Tăng cường-Sinh văn bản) mã nguồn mở dựa trên khả năng hiểu tài liệu chuyên sâu. Khi tích hợp với các LLM, nó có khả năng cung cấp tính năng trả lời câu hỏi trung thực, được hỗ trợ bởi các trích dẫn có căn cứ từ nhiều loại dữ liệu có định dạng phức tạp.
+
+Hướng dẫn bắt đầu nhanh này mô tả quy trình chung từ:
+
+- Khởi động máy chủ RAGFlow cục bộ,
+- Tạo bộ dữ liệu,
+- Can thiệp vào quá trình phân tích tệp, đến
+- Thiết lập cuộc trò chuyện AI dựa trên bộ dữ liệu của bạn.
+
+:::danger QUAN TRỌNG
+Chúng tôi chính thức hỗ trợ CPU x86 và GPU Nvidia, và tài liệu này cung cấp hướng dẫn triển khai RAGFlow bằng Docker trên nền tảng x86. Mặc dù chúng tôi cũng kiểm thử RAGFlow trên nền tảng ARM64, nhưng chúng tôi không duy trì các Docker image RAGFlow cho ARM.
+
+Nếu bạn đang sử dụng nền tảng ARM, hãy theo [hướng dẫn này](./develop/build_docker_image.mdx) để build Docker image RAGFlow.
+:::
+
+## Yêu cầu hệ thống
+
+- CPU &ge; 4 nhân (x86);
+- RAM &ge; 16 GB;
+- Ổ đĩa &ge; 50 GB;
+- Docker &ge; 24.0.0 & Docker Compose &ge; v2.26.1.
+- [gVisor](https://gvisor.dev/docs/user_guide/install/): Chỉ yêu cầu nếu bạn muốn sử dụng tính năng thực thi mã ([sandbox](https://github.com/infiniflow/ragflow/tree/main/sandbox)) của RAGFlow.
+
+:::tip LƯU Ý
+Nếu bạn chưa cài đặt Docker trên máy cục bộ (Windows, Mac, hoặc Linux), hãy xem [Cài đặt Docker Engine](https://docs.docker.com/engine/install/).
+:::
+
+## Khởi động máy chủ
+
+Phần này cung cấp hướng dẫn thiết lập máy chủ RAGFlow trên Linux. Nếu bạn sử dụng hệ điều hành khác, đừng lo lắng. Hầu hết các bước đều tương tự.
+
+1. Đảm bảo `vm.max_map_count` &ge; 262144.
+
+<details>
+  <summary>Nhấn để xem chi tiết:</summary>
+
+   `vm.max_map_count`. Giá trị này thiết lập số lượng vùng ánh xạ bộ nhớ tối đa mà một tiến trình có thể có. Giá trị mặc định của nó là 65530. Mặc dù hầu hết các ứng dụng yêu cầu ít hơn một nghìn ánh xạ, nhưng giảm giá trị này có thể gây ra hành vi bất thường và hệ thống sẽ báo lỗi hết bộ nhớ khi tiến trình đạt giới hạn.
+
+   RAGFlow v0.23.1 sử dụng Elasticsearch hoặc [Infinity](https://github.com/infiniflow/infinity) cho nhiều lần truy xuất. Việc đặt giá trị của `vm.max_map_count` chính xác là rất quan trọng để thành phần Elasticsearch hoạt động đúng.
+
+<Tabs
+  defaultValue="linux"
+  values={[
+    {label: 'Linux', value: 'linux'},
+    {label: 'macOS', value: 'macos'},
+    {label: 'Windows', value: 'windows'},
+  ]}>
+  <TabItem value="linux">
+   1.1. Kiểm tra giá trị của `vm.max_map_count`:
+
+   ```bash
+   $ sysctl vm.max_map_count
+   ```
+
+   1.2. Đặt lại `vm.max_map_count` về giá trị ít nhất 262144 nếu chưa đạt.
+
+   ```bash
+   $ sudo sysctl -w vm.max_map_count=262144
+   ```
+
+   :::caution CẢNH BÁO
+   Thay đổi này sẽ bị reset sau khi khởi động lại hệ thống. Nếu bạn quên cập nhật giá trị trong lần khởi động máy chủ tiếp theo, bạn có thể gặp ngoại lệ `Can't connect to ES cluster`.
+   :::
+   
+   1.3. Để đảm bảo thay đổi của bạn vĩnh viễn, hãy thêm hoặc cập nhật giá trị `vm.max_map_count` trong **/etc/sysctl.conf**:
+
+   ```bash
+   vm.max_map_count=262144
+   ```
+  </TabItem>
+  <TabItem value="macos">
+   Nếu bạn đang dùng macOS với Docker Desktop, hãy chạy lệnh sau để cập nhật `vm.max_map_count`:
+
+   ```bash
+   docker run --rm --privileged --pid=host alpine sysctl -w vm.max_map_count=262144
+   ```
+
+   :::caution CẢNH BÁO
+   Thay đổi này sẽ bị reset sau khi khởi động lại hệ thống. Nếu bạn quên cập nhật giá trị trong lần khởi động máy chủ tiếp theo, bạn có thể gặp ngoại lệ `Can't connect to ES cluster`.
+   :::
+
+   Để thay đổi vĩnh viễn, hãy tạo một file với các cài đặt phù hợp:
+
+   1.1. Tạo file:
+
+   ```shell
+   sudo nano /Library/LaunchDaemons/com.user.vmmaxmap.plist
+   ```
+
+   1.2. Mở file:
+
+   ```shell
+   sudo launchctl load /Library/LaunchDaemons/com.user.vmmaxmap.plist
+   ```
+
+   1.3. Thêm cài đặt:
+
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+   <plist version="1.0">
+   <dict>
+       <key>Label</key>
+       <string>com.user.vmmaxmap</string>
+       <key>ProgramArguments</key>
+       <array>
+           <string>/usr/sbin/sysctl</string>
+           <string>-w</string>
+           <string>vm.max_map_count=262144</string>
+       </array>
+       <key>RunAtLoad</key>
+       <true/>
+   </dict>
+   </plist>
+   ```
+
+   1.4. Sau khi lưu file, tải daemon mới:
+
+   ```shell
+   sudo launchctl load /Library/LaunchDaemons/com.user.vmmaxmap.plist
+   ```
+
+   :::note
+   Nếu các bước trên không hoạt động, hãy xem xét sử dụng [giải pháp thay thế này](https://github.com/docker/for-mac/issues/7047#issuecomment-1791912053), sử dụng một container và không yêu cầu chỉnh sửa thủ công cài đặt macOS.
+   :::
+
+  </TabItem>
+  <TabItem value="windows">
+
+   #### Nếu bạn đang dùng Windows với Docker Desktop, bạn *phải* sử dụng docker-machine để đặt `vm.max_map_count`:
+
+   ```bash
+   $ docker-machine ssh
+   $ sudo sysctl -w vm.max_map_count=262144
+   ```
+   #### Nếu bạn đang dùng Windows với Docker Desktop WSL 2 backend, hãy sử dụng docker-desktop để đặt `vm.max_map_count`:
+
+   1.1. Chạy lệnh sau trong WSL: 
+   ```bash
+   $ wsl -d docker-desktop -u root
+   $ sysctl -w vm.max_map_count=262144
+   ```
+
+   :::caution CẢNH BÁO
+   Thay đổi này sẽ bị reset sau khi bạn khởi động lại Docker. Nếu bạn quên cập nhật giá trị trong lần khởi động máy chủ tiếp theo, bạn có thể gặp ngoại lệ `Can't connect to ES cluster`.
+   :::
+
+   1.2. Nếu bạn không muốn chạy các lệnh đó mỗi lần khởi động lại Docker, bạn có thể cập nhật `%USERPROFILE%.wslconfig` như sau để giữ thay đổi vĩnh viễn toàn cục cho tất cả WSL distributions:
+
+   ```bash
+   [wsl2]
+   kernelCommandLine = "sysctl.vm.max_map_count=262144"
+   ```
+   *Điều này khiến tất cả máy ảo WSL2 có cài đặt đó được gán khi khởi động.*
+
+   :::note
+   Nếu bạn đang dùng Windows 11 hoặc Windows 10 phiên bản 22H2 và đã cài đặt phiên bản Microsoft Store của WSL, bạn cũng có thể cập nhật **/etc/sysctl.conf** trong WSL distribution docker-desktop để giữ thay đổi vĩnh viễn:
+
+   ```bash
+   $ wsl -d docker-desktop -u root
+   $ vi /etc/sysctl.conf
+   ```
+
+   ```bash
+   # Thêm dòng sau:
+   vm.max_map_count = 262144
+   ```
+   :::
+  </TabItem>
+</Tabs>
+
+</details>
+
+2. Clone repo:
+
+   ```bash
+   $ git clone https://github.com/infiniflow/ragflow.git
+   $ cd ragflow/docker
+   $ git checkout -f v0.23.1
+   ```
+
+3. Sử dụng các Docker image được build sẵn và khởi động máy chủ:
+
+   ```bash
+   # Sử dụng CPU cho các tác vụ DeepDoc:
+   $ docker compose -f docker-compose.yml up -d
+   ```
+
+   ```mdx-code-block
+   <APITable>
+   ```
+
+   | Tag Docker image RAGFlow | Kích thước image (GB) | Ổn định?                    |
+   | ------------------------- | ---------------------- | --------------------------- |
+   | v0.23.1                   | &approx;2              | Phiên bản ổn định           |
+   | nightly                   | &approx;2              | Bản nightly _không ổn định_ |
+
+   ```mdx-code-block
+   </APITable>
+   ```
+
+   :::tip LƯU Ý
+   Kích thước image được hiển thị là kích thước Docker image *đã tải xuống* (đã nén). Khi Docker chạy image, nó sẽ giải nén, dẫn đến dung lượng ổ đĩa lớn hơn đáng kể. Một Docker image sẽ mở rộng đến khoảng 7 GB sau khi giải nén.
+   :::
+
+4. Kiểm tra trạng thái máy chủ sau khi đã khởi động:
+
+   ```bash
+   $ docker logs -f docker-ragflow-cpu-1
+   ```
+
+   _Kết quả sau đây xác nhận hệ thống đã khởi động thành công:_
+
+   ```bash
+        ____   ___    ______ ______ __
+       / __ \ /   |  / ____// ____// /____  _      __
+      / /_/ // /| | / / __ / /_   / // __ \| | /| / /
+     / _, _// ___ |/ /_/ // __/  / // /_/ /| |/ |/ /
+    /_/ |_|/_/  |_|\____//_/    /_/ \____/ |__/|__/
+   
+    * Running on all addresses (0.0.0.0)
+   ```
+
+   :::danger QUAN TRỌNG
+   Nếu bạn bỏ qua bước xác nhận này và đăng nhập trực tiếp vào RAGFlow, trình duyệt của bạn có thể hiện lỗi `network anomaly` vì lúc đó RAGFlow có thể chưa được khởi tạo hoàn toàn.
+   :::  
+
+5. Trong trình duyệt web, nhập địa chỉ IP của máy chủ và đăng nhập vào RAGFlow.
+
+   :::caution CẢNH BÁO
+   Với cài đặt mặc định, bạn chỉ cần nhập `http://IP_CUA_MAY_CHU` (**không có** số cổng) vì cổng HTTP mặc định `80` có thể bỏ qua khi sử dụng cấu hình mặc định.
+   :::
+
+## Cấu hình LLM
+
+RAGFlow là một RAG engine và cần hoạt động cùng với LLM để cung cấp khả năng trả lời câu hỏi có căn cứ, không ảo giác. RAGFlow hỗ trợ hầu hết các LLM chính thống. Để xem danh sách đầy đủ các mô hình được hỗ trợ, hãy tham khảo [Các mô hình được hỗ trợ](./references/supported_models.mdx).
+
+:::note 
+RAGFlow cũng hỗ trợ triển khai LLM cục bộ bằng Ollama, Xinference, hoặc LocalAI, nhưng phần này không được đề cập trong hướng dẫn bắt đầu nhanh này. 
+:::
+
+Để thêm và cấu hình LLM: 
+
+1. Nhấn vào logo của bạn ở góc trên bên phải trang **>** **Nhà cung cấp mô hình**.
+
+2. Nhấn vào LLM mong muốn và cập nhật API key tương ứng.
+
+3. Nhấn **Cài đặt mô hình hệ thống** để chọn các mô hình mặc định: 
+
+   - Mô hình chat, 
+   - Mô hình nhúng (embedding),
+   - Mô hình nhận dạng ảnh thành văn bản,
+   - và nhiều hơn nữa.
+
+> Một số mô hình, chẳng hạn như mô hình nhận dạng ảnh **qwen-vl-max**, là phụ trợ của một LLM cụ thể. Bạn có thể cần cập nhật API key để truy cập các mô hình này. 
+
+## Tạo bộ dữ liệu đầu tiên
+
+Bạn được phép tải lên các tệp vào bộ dữ liệu trong RAGFlow và phân tích chúng thành các dataset. Một bộ dữ liệu về cơ bản là một tập hợp các dataset. Việc trả lời câu hỏi trong RAGFlow có thể dựa trên một bộ dữ liệu cụ thể hoặc nhiều bộ dữ liệu. Các định dạng tệp RAGFlow hỗ trợ bao gồm tài liệu (PDF, DOC, DOCX, TXT, MD, MDX), bảng tính (CSV, XLSX, XLS), hình ảnh (JPEG, JPG, PNG, TIF, GIF) và bài trình chiếu (PPT, PPTX).
+
+Để tạo bộ dữ liệu đầu tiên:
+
+1. Nhấn tab **Bộ dữ liệu** ở giữa trên cùng trang **>** **Tạo bộ dữ liệu**.
+
+2. Nhập tên bộ dữ liệu và nhấn **OK** để xác nhận.
+
+   _Bạn được chuyển đến trang **Cấu hình** của bộ dữ liệu._
+
+   ![cấu hình bộ dữ liệu](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/configure_knowledge_base.jpg)
+
+3. RAGFlow cung cấp nhiều mẫu chunk phù hợp với các bố cục tài liệu và định dạng tệp khác nhau. Chọn mô hình nhúng và phương pháp chunk (mẫu) cho bộ dữ liệu của bạn. 
+
+   :::danger QUAN TRỌNG 
+   Sau khi chọn mô hình nhúng và sử dụng nó để phân tích một tệp, bạn không được phép thay đổi mô hình đó nữa. Lý do rõ ràng là chúng tôi phải đảm bảo rằng tất cả các tệp trong một bộ dữ liệu cụ thể được phân tích bằng cùng *một* mô hình nhúng (đảm bảo chúng được so sánh trong cùng một không gian nhúng). 
+   :::
+
+   _Bạn được chuyển đến trang **Bộ dữ liệu** của dataset._
+
+4. Nhấn **+ Thêm tệp** **>** **Tệp cục bộ** để bắt đầu tải lên tệp vào bộ dữ liệu. 
+
+5. Trong mục tệp đã tải lên, nhấn nút phát để bắt đầu phân tích tệp:
+
+   ![phân tích tệp](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/parse_file.jpg)
+
+   :::caution LƯU Ý 
+   - Nếu quá trình phân tích tệp bị dừng dưới 1%, hãy xem [câu hỏi thường gặp này](./faq.mdx#why-does-my-document-parsing-stall-at-under-one-percent).
+   - Nếu quá trình phân tích tệp bị dừng gần hoàn thành, hãy xem [câu hỏi thường gặp này](./faq.mdx#why-does-my-pdf-parsing-stall-near-completion-while-the-log-does-not-show-any-error)
+   :::
+
+## Can thiệp vào quá trình phân tích tệp
+
+RAGFlow có tính năng hiển thị và giải thích, cho phép bạn xem kết quả chunk và can thiệp khi cần. Để thực hiện:
+
+1. Nhấn vào tệp đã hoàn thành phân tích để xem kết quả chunk:
+
+   _Bạn được chuyển đến trang **Chunk**:_
+
+   ![chunks](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/file_chunks.jpg)
+
+2. Di chuột qua từng ảnh thu nhỏ để xem nhanh từng chunk.
+
+3. Nhấp đúp vào văn bản đã được chunk để thêm từ khóa hoặc thực hiện các thay đổi *thủ công* khi cần:
+
+   ![cập nhật chunk](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/add_keyword_question.jpg)
+
+   :::caution LƯU Ý
+   Bạn có thể thêm từ khóa hoặc câu hỏi vào một chunk tệp để cải thiện thứ hạng của nó cho các truy vấn chứa các từ khóa đó. Hành động này tăng trọng số từ khóa và có thể cải thiện vị trí của nó trong danh sách tìm kiếm.
+   :::
+
+4. Trong Kiểm tra truy xuất, đặt một câu hỏi nhanh trong **Văn bản kiểm tra** để kiểm tra lại xem cấu hình của bạn có hoạt động không:
+
+   _Như bạn có thể thấy từ kết quả sau, RAGFlow phản hồi với các trích dẫn trung thực._
+
+   ![kiểm tra truy xuất](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/retrieval_test.jpg)
+
+## Thiết lập chat AI
+
+Các cuộc trò chuyện trong RAGFlow dựa trên một bộ dữ liệu cụ thể hoặc nhiều bộ dữ liệu. Sau khi tạo bộ dữ liệu và hoàn thành phân tích tệp, bạn có thể bắt đầu cuộc trò chuyện AI.
+
+1. Nhấn tab **Chat** ở giữa trên cùng trang **>** **Tạo chat** để tạo trợ lý chat.
+2. Nhấn vào ứng dụng chat đã tạo để vào trang cấu hình của nó.
+   > RAGFlow cung cấp tính linh hoạt để chọn mô hình chat khác nhau cho mỗi cuộc hội thoại, đồng thời cho phép bạn đặt các mô hình mặc định trong **Cài đặt mô hình hệ thống**.
+
+2. Cập nhật **Cài đặt chat** ở phía phải của trang cấu hình:
+
+   - Đặt tên trợ lý và chỉ định các bộ dữ liệu của bạn.
+   - **Phản hồi trống**:
+     - Nếu bạn muốn *giới hạn* câu trả lời của RAGFlow trong các bộ dữ liệu của mình, hãy để lại phản hồi ở đây. Sau đó khi không tìm được câu trả lời, nó sẽ *đồng nhất* phản hồi với những gì bạn đặt ở đây.
+     - Nếu bạn muốn RAGFlow *ứng biến* khi không tìm được câu trả lời từ bộ dữ liệu, hãy để trống, điều này có thể dẫn đến ảo giác.
+
+3. Cập nhật **Prompt hệ thống** hoặc giữ nguyên ban đầu.
+
+4. Chọn mô hình chat trong danh sách **Mô hình**.
+
+5. Bây giờ, hãy bắt đầu:
+
+   ![chat_thermal_solution](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/chat_thermal_solution.jpg)
+
+
+:::tip LƯU Ý
+RAGFlow cũng cung cấp HTTP và Python API để bạn tích hợp khả năng của RAGFlow vào ứng dụng của mình. Đọc các tài liệu sau để biết thêm thông tin:
+
+- [Lấy API key RAGFlow](./develop/acquire_ragflow_api_key.md)
+- [Tham chiếu HTTP API](./references/http_api_reference.md)
+- [Tham chiếu Python API](./references/python_api_reference.md)
+:::

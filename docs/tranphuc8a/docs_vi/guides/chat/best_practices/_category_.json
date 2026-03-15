@@ -1,0 +1,11 @@
+{
+  "label": "Thực tiễn tốt nhất",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "Các thực tiễn tốt nhất khi cấu hình trợ lý chat."
+  },
+  "customProps": {
+    "categoryIcon": "LucideStar"
+  }
+}

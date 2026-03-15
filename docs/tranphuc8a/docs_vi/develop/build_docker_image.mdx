@@ -1,0 +1,63 @@
+---
+sidebar_position: 1
+slug: /build_docker_image
+sidebar_custom_props: {
+  categoryIcon: LucidePackage
+}
+---
+# Build RAGFlow Docker image
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Hướng dẫn giải thích cách build RAGFlow Docker image từ mã nguồn. Bằng cách làm theo hướng dẫn này, bạn sẽ có thể tạo ra một Docker image cục bộ có thể được sử dụng cho mục đích phát triển, gỡ lỗi hoặc kiểm thử.
+
+## Đối tượng mục tiêu
+
+- Các lập trình viên đã thêm tính năng mới hoặc sửa đổi code hiện có và cần Docker image để xem và gỡ lỗi các thay đổi.
+- Các lập trình viên muốn build RAGFlow Docker image cho nền tảng ARM64.
+- Người kiểm thử muốn khám phá các tính năng mới nhất của RAGFlow trong Docker image.
+
+## Điều kiện tiên quyết
+
+- CPU &ge; 4 nhân
+- RAM &ge; 16 GB
+- Ổ đĩa &ge; 50 GB
+- Docker &ge; 24.0.0 & Docker Compose &ge; v2.26.1
+
+## Build Docker image
+
+Image này có kích thước khoảng 2 GB và phụ thuộc vào các dịch vụ LLM và nhúng bên ngoài.
+
+:::danger QUAN TRỌNG
+- Mặc dù chúng tôi cũng kiểm thử RAGFlow trên nền tảng ARM64, chúng tôi không duy trì RAGFlow Docker image cho ARM. Tuy nhiên, bạn có thể tự build image trên máy chủ `linux/arm64` hoặc `darwin/arm64`.
+- Đối với nền tảng ARM64, hãy nâng cấp phiên bản `xgboost` trong **pyproject.toml** lên `1.6.0` và đảm bảo **unixODBC** được cài đặt đúng cách.
+:::
+
+```bash
+git clone https://github.com/infiniflow/ragflow.git
+cd ragflow/
+uv run download_deps.py
+docker build -f Dockerfile.deps -t infiniflow/ragflow_deps .
+docker build -f Dockerfile -t infiniflow/ragflow:nightly .
+```
+
+## Khởi chạy dịch vụ RAGFlow từ Docker cho MacOS
+
+Sau khi build image infiniflow/ragflow:nightly, bạn đã sẵn sàng khởi chạy dịch vụ RAGFlow đầy đủ chức năng với tất cả các thành phần cần thiết như Elasticsearch, MySQL, MinIO, Redis, v.v.
+
+## Ví dụ: Apple M2 Pro (Sequoia)
+
+1. Chỉnh sửa cấu hình Docker Compose
+
+Mở tệp `docker/.env`. Tìm cài đặt `RAGFLOW_IMAGE` và thay đổi tham chiếu image từ `infiniflow/ragflow:v0.23.1` thành `infiniflow/ragflow:nightly` để sử dụng image được build sẵn.
+
+2. Khởi chạy dịch vụ
+
+```bash
+cd docker
+$ docker compose -f docker-compose-macos.yml up -d
+```
+
+3. Truy cập dịch vụ RAGFlow
+
+Khi quá trình thiết lập hoàn tất, mở trình duyệt và điều hướng đến http://127.0.0.1 hoặc địa chỉ IP máy chủ của bạn (cổng mặc định là 80). Bạn sẽ được chuyển đến trang chào mừng RAGFlow. Chúc vui vẻ! 🍻

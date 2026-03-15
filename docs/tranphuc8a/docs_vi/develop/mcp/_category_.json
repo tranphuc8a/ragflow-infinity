@@ -1,0 +1,11 @@
+{
+  "label": "MCP",
+  "position": 40,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn và tài liệu tham chiếu về truy cập tập dữ liệu RAGFlow qua MCP."
+  },
+  "customProps": {
+    "categoryIcon": "SiModelcontextprotocol"
+  }
+}

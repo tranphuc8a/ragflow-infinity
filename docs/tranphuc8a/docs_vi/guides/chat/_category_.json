@@ -1,0 +1,11 @@
+{
+  "label": "Chat",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn chuyên biệt cho Chat."
+  },
+  "customProps": {
+    "categoryIcon": "LucideMessagesSquare"
+  }
+}

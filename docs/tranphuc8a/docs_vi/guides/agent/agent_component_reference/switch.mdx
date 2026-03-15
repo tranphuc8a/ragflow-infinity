@@ -1,0 +1,50 @@
+---
+sidebar_position: 6
+slug: /switch_component
+sidebar_custom_props: {
+  categoryIcon: LucideSplit
+}
+---
+# Thành phần Switch
+
+Một thành phần đánh giá việc thỏa điều kiện và điều hướng luồng thực thi tương ứng.
+
+---
+
+Thành phần **Switch** đánh giá điều kiện dựa trên đầu ra của các thành phần cụ thể, rồi điều hướng luồng thực thi để hỗ trợ logic phân nhánh phức tạp.
+
+## Kịch bản sử dụng
+
+**Switch** rất quan trọng cho việc điều hướng theo điều kiện. Dù có điểm giống với thành phần [Categorize](./categorize.mdx) trong các chiến lược đa nhánh, điểm khác biệt chính là: **Switch** đánh giá theo luật, còn **Categorize** dùng AI/LLM để ra quyết định.
+
+## Cấu hình
+
+### Case n
+
+**Switch** phải có ít nhất một case, mỗi case có thể có nhiều điều kiện. Khi một case có nhiều điều kiện, bạn phải đặt quan hệ logic giữa chúng là AND hoặc OR.
+
+Sau khi thêm case mới, vào thành phần **Switch** trên canvas, tìm nút **+** cạnh case và nhấp để chỉ định thành phần downstream.
+
+#### Condition
+
+Đánh giá đầu ra của thành phần có thỏa điều kiện hay không.
+
+:::danger QUAN TRỌNG
+Khi bạn thêm nhiều điều kiện cho một case, trường **Logical operator** sẽ xuất hiện, buộc bạn đặt quan hệ logic là AND hoặc OR.
+:::
+
+- **Operator**: Toán tử để tạo biểu thức điều kiện.
+  - Equals (mặc định)
+  - Not equal
+  - Greater than
+  - Greater equal
+  - Less than
+  - Less equal
+  - Contains
+  - Not contains
+  - Starts with
+  - Ends with
+  - Is empty
+  - Not empty
+- **Value**: Một giá trị đơn, có thể là integer, float hoặc string.
+  - Không hỗ trợ delimiter, nhiều giá trị hoặc biểu thức.

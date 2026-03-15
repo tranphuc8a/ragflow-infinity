@@ -1,0 +1,11 @@
+{
+  "label": "Di chuyển",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn di chuyển RAGFlow"
+  },
+  "customProps": {
+    "categoryIcon": "LucideArrowRightLeft"
+  }
+}

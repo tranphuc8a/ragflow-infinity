@@ -1,0 +1,11 @@
+{
+  "label": "Đóng góp",
+  "position": 8,
+  "link": {
+    "type": "generated-index",
+    "description": "Các hướng dẫn đóng góp khác."
+  },
+  "customProps": {
+    "sidebarIcon": "LucideHandshake"
+  }
+}

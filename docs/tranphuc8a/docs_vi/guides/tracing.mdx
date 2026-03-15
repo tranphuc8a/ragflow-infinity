@@ -1,0 +1,71 @@
+---
+sidebar_position: 9
+slug: /tracing
+sidebar_custom_props: {
+  categoryIcon: LucideLocateFixed
+}
+---
+# Tracing
+
+Quan sát và theo dõi với Langfuse.
+
+---
+
+:::info KUDOS
+Tài liệu này được đóng góp bởi thành viên cộng đồng [jannikmaierhoefer](https://github.com/jannikmaierhoefer). 👏
+:::
+
+RAGFlow đi kèm với tích hợp [Langfuse](https://langfuse.com) tích hợp sẵn để bạn có thể **kiểm tra và gỡ lỗi mọi bước truy xuất và tạo sinh** của các pipeline RAG của mình gần như theo thời gian thực.
+
+Langfuse lưu trữ các trace, span và nội dung prompt trong backend quan sát được xây dựng theo mục đích và cung cấp khả năng lọc và trực quan hóa.
+
+:::info LƯU Ý
+• RAGFlow **≥ 0.18.0** (chứa connector Langfuse)
+• Workspace Langfuse (cloud hoặc tự lưu trữ) với _Project Public Key_ và _Secret Key_
+:::
+
+---
+
+## 1. Thu thập thông tin đăng nhập Langfuse của bạn
+
+1. Đăng nhập vào dashboard Langfuse.
+2. Mở **Cài đặt ▸ Dự án** và tạo dự án mới hoặc chọn dự án hiện có.
+3. Sao chép **Public Key** và **Secret Key**.
+4. Lưu ý **host** Langfuse (ví dụ: `https://cloud.langfuse.com`). Sử dụng URL cơ sở của cài đặt riêng của bạn nếu bạn tự lưu trữ.
+
+> Các khóa là _cấp dự án_: một cặp khóa là đủ cho tất cả các môi trường cần ghi vào cùng một dự án.
+
+---
+
+## 2. Thêm khóa vào RAGFlow
+
+RAGFlow lưu thông tin đăng nhập _theo tenant_. Bạn có thể cấu hình chúng qua giao diện web hoặc HTTP API.
+
+1. Đăng nhập vào RAGFlow và nhấp vào avatar của bạn ở góc trên bên phải.
+2. Chọn **API ▸ Cuộn xuống cuối trang ▸ Cấu hình Langfuse**.
+3. Điền **Host**, **Public Key** và **Secret Key** Langfuse của bạn.
+4. Nhấp **Lưu**.
+
+![Ví dụ RAGFlow trace trong Langfuse](https://langfuse.com/images/docs/ragflow/ragflow-configuration.gif)
+
+Sau khi lưu, RAGFlow bắt đầu phát ra trace tự động — không cần thay đổi code.
+
+---
+
+## 3. Chạy pipeline và xem trace
+
+1. Thực thi bất kỳ pipeline chat hoặc truy xuất nào trong RAGFlow (ví dụ: demo Quickstart).
+2. Mở dự án Langfuse của bạn ▸ **Traces**.
+3. Lọc theo **name ~ `ragflow-*`** (RAGFlow thêm tiền tố `ragflow-` vào mỗi trace).
+
+Đối với mỗi yêu cầu người dùng, bạn sẽ thấy:
+
+• Một **trace** đại diện cho toàn bộ yêu cầu
+• **Span** cho các bước truy xuất, xếp hạng và tạo sinh
+• **Prompts**, **tài liệu được truy xuất** và **phản hồi LLM** đầy đủ làm metadata
+
+![Ví dụ RAGFlow trace trong Langfuse](https://langfuse.com/images/docs/ragflow/ragflow-trace-frame.png)
+
+:::tip LƯU Ý
+Sử dụng chế độ xem diff của Langfuse để so sánh các phiên bản prompt hoặc khoan sâu vào các truy xuất chạy lâu để xác định các điểm nghẽn.
+:::

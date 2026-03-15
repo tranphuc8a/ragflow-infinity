@@ -1,0 +1,11 @@
+{
+  "label": "Bắt đầu nhanh",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn bắt đầu nhanh dành cho Agent"
+  },
+  "customProps": {
+    "categoryIcon": "LucideRocket"
+  }
+}

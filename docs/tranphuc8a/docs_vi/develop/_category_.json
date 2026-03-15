@@ -1,0 +1,11 @@
+{
+  "label": "Nhà phát triển",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn cho nhà phát triển chuyên sâu"
+  },
+  "customProps": {
+    "sidebarIcon": "LucideWrench"
+  }
+}

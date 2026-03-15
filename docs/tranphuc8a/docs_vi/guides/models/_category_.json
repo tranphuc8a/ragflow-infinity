@@ -1,0 +1,11 @@
+{
+  "label": "Mô hình",
+  "position": -1,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn về cài đặt mô hình."
+  },
+  "customProps": {
+    "categoryIcon": "LucideBox"
+  }
+}

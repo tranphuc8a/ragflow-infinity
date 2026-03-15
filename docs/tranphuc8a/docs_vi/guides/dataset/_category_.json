@@ -1,0 +1,11 @@
+{
+  "label": "Tập dữ liệu",
+  "position": 0,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn cấu hình tập dữ liệu."
+  },
+  "customProps": {
+    "categoryIcon": "LucideDatabaseZap"
+  }
+}

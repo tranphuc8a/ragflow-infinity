@@ -1,0 +1,11 @@
+{
+  "label": "Nhóm",
+  "position": 4,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn chuyên biệt cho Nhóm."
+  },
+  "customProps": {
+    "categoryIcon": "LucideUsers"
+  }
+}

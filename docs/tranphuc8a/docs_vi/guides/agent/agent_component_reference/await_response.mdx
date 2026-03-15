@@ -1,0 +1,59 @@
+---
+sidebar_position: 5
+slug: /await_response
+sidebar_custom_props: {
+  categoryIcon: LucideMessageSquareDot
+}
+---
+# Thành phần Await response
+
+Một thành phần tạm dừng workflow và chờ đầu vào người dùng.
+
+---
+
+Thành phần **Await response** tạm dừng workflow, khởi tạo hội thoại và thu thập thông tin chính thông qua các biểu mẫu định nghĩa trước.
+
+## Kịch bản sử dụng
+
+**Await response** cần thiết khi bạn cần hiển thị phản hồi của agent hoặc yêu cầu tương tác người dùng - hệ thống.
+
+## Cấu hình
+
+### Guiding question
+
+Có hiển thị thông điệp đã định nghĩa trong trường **Message** hay không.
+
+### Message
+
+Thông điệp tĩnh cần gửi.
+
+Nhấp **+ Add message** để thêm các lựa chọn thông điệp. Khi có nhiều thông điệp, thành phần **Message** sẽ chọn ngẫu nhiên một thông điệp để gửi.
+
+### Input
+
+Bạn có thể định nghĩa biến toàn cục trong **Await response**, có thể bắt buộc hoặc tùy chọn. Sau khi thiết lập, người dùng cần cung cấp giá trị cho các biến khi tương tác với agent. Nhấp **+** để thêm biến toàn cục với các thuộc tính:
+
+- **Name**: _Bắt buộc_
+  Tên mô tả cung cấp thêm thông tin về biến.
+- **Type**: _Bắt buộc_
+  Kiểu biến:
+  - **Single-line text**: Nhận một dòng văn bản không xuống dòng.
+  - **Paragraph text**: Nhận nhiều dòng văn bản, bao gồm xuống dòng.
+  - **Dropdown options**: Yêu cầu người dùng chọn giá trị từ menu thả xuống. Bạn phải đặt _ít nhất_ một tùy chọn.
+  - **file upload**: Yêu cầu người dùng tải lên một hoặc nhiều tệp.
+  - **Number**: Nhận số.
+  - **Boolean**: Yêu cầu người dùng bật/tắt.
+- **Key**: _Bắt buộc_
+  Tên biến duy nhất.
+- **Optional**: Công tắc cho biết biến có tùy chọn hay không.
+
+:::tip LƯU Ý
+Để truyền tham số từ client, gọi:
+
+- HTTP method [Converse with agent](../../../references/http_api_reference.md#converse-with-agent), hoặc
+- Python method [Converse with agent](../../../references/python_api_reference.md#converse-with-agent).
+:::
+
+:::danger QUAN TRỌNG
+Nếu đặt key type là **file**, hãy đảm bảo số token của tệp tải lên không vượt quá giới hạn token tối đa của nhà cung cấp mô hình; nếu không, văn bản thuần trong tệp sẽ bị cắt và không đầy đủ.
+:::

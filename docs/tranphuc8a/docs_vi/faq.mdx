@@ -1,0 +1,538 @@
+---
+sidebar_position: 10
+slug: /faq
+sidebar_custom_props: {
+  sidebarIcon: LucideCircleQuestionMark
+}
+---
+# Câu hỏi thường gặp
+
+Giải đáp các câu hỏi về tính năng chung, xử lý sự cố, cách sử dụng và nhiều hơn nữa.
+
+---
+
+import TOCInline from '@theme/TOCInline';
+
+<TOCInline toc={toc} />
+
+## Tính năng chung
+
+---
+
+### Điều gì làm RAGFlow khác biệt so với các sản phẩm RAG khác?
+
+Tình trạng "rác vào, rác ra" vẫn chưa thay đổi mặc dù các LLM đã cải tiến đáng kể khả năng xử lý ngôn ngữ tự nhiên (NLP). Trong câu trả lời của mình, RAGFlow giới thiệu hai tính năng độc đáo so với các sản phẩm RAG (Truy xuất-Tăng cường-Sinh văn bản) khác.
+
+- Phân tích tài liệu chi tiết: Phân tích tài liệu bao gồm hình ảnh và bảng, với khả năng linh hoạt để bạn can thiệp khi cần.
+- Câu trả lời có thể truy nguồn với hallucination giảm thiểu: Bạn có thể tin tưởng vào câu trả lời của RAGFlow vì bạn có thể xem các trích dẫn và tài liệu tham khảo hỗ trợ chúng.
+
+---
+
+### Có thể triển khai cục bộ các mô hình nhúng nào?
+
+Bắt đầu từ `v0.22.0`, chúng tôi chỉ cung cấp phiên bản slim và không còn thêm hậu tố **-slim** vào tag image nữa.
+
+---
+
+### Tìm phiên bản RAGFlow ở đâu? Cách đọc phiên bản?
+
+Bạn có thể tìm số phiên bản RAGFlow trên trang **Hệ thống** trong giao diện:
+
+![Image](https://github.com/user-attachments/assets/20cf7213-2537-4e18-a88c-4dadf6228c6b)
+
+Nếu bạn build RAGFlow từ nguồn, số phiên bản cũng xuất hiện trong nhật ký hệ thống:
+
+```
+        ____   ___    ______ ______ __               
+       / __ \ /   |  / ____// ____// /____  _      __
+      / /_/ // /| | / / __ / /_   / // __ \| | /| / /
+     / _, _// ___ |/ /_/ // __/  / // /_/ /| |/ |/ / 
+    /_/ |_|/_/  |_|\____//_/    /_/ \____/ |__/|__/                             
+
+2025-02-18 10:10:43,835 INFO     1445658 RAGFlow version: v0.15.0-50-g6daae7f2
+```
+
+Trong đó:
+
+- `v0.15.0`: Phiên bản được phát hành chính thức.
+- `50`: Số lần commit git từ phiên bản chính thức.
+- `g6daae7f2`: `g` là tiền tố, và `6daae7f2` là 7 ký tự đầu của ID commit hiện tại.
+
+---
+
+### Tại sao không sử dụng các database vector mã nguồn mở khác làm document engine?
+
+Hiện tại, chỉ Elasticsearch và [Infinity](https://github.com/infiniflow/infinity) đáp ứng yêu cầu tìm kiếm kết hợp của RAGFlow. Hầu hết các database vector mã nguồn mở có hỗ trợ hạn chế cho tìm kiếm toàn văn, và sparse embedding không phải là sự thay thế cho tìm kiếm toàn văn. Ngoài ra, các database vector này thiếu các tính năng quan trọng cần thiết cho RAGFlow, như tìm kiếm cụm từ và khả năng xếp hạng nâng cao.
+
+Những hạn chế này đã thúc đẩy chúng tôi phát triển [Infinity](https://github.com/infiniflow/infinity), database AI-native, từ đầu.
+
+---
+
+### Sự khác biệt giữa demo.ragflow.io và dịch vụ RAGFlow mã nguồn mở triển khai cục bộ?
+
+demo.ragflow.io thể hiện các khả năng của RAGFlow Enterprise. Các mô hình DeepDoc của nó được huấn luyện trước bằng dữ liệu độc quyền và cung cấp kiểm soát quyền nhóm tinh vi hơn nhiều. Về cơ bản, demo.ragflow.io phục vụ như một xem trước của dịch vụ SaaS (Phần mềm như một Dịch vụ) sắp ra mắt của RAGFlow.
+
+Bạn có thể triển khai dịch vụ RAGFlow mã nguồn mở và gọi nó từ Python client hoặc thông qua các RESTful API. Tuy nhiên, điều này không được hỗ trợ trên demo.ragflow.io.
+
+---
+
+### Tại sao RAGFlow mất nhiều thời gian hơn LangChain để phân tích tài liệu?
+
+Chúng tôi đã đầu tư nhiều công sức vào các tác vụ tiền xử lý tài liệu như phân tích bố cục, nhận dạng cấu trúc bảng và OCR (Nhận dạng ký tự quang học) sử dụng các mô hình thị giác của chúng tôi. Điều này góp phần vào thời gian bổ sung cần thiết.
+
+---
+
+### Tại sao RAGFlow yêu cầu nhiều tài nguyên hơn các dự án khác?
+
+RAGFlow có một số mô hình tích hợp để phân tích cấu trúc tài liệu, chiếm thêm tài nguyên tính toán.
+
+---
+
+### RAGFlow hỗ trợ các kiến trúc hoặc thiết bị nào?
+
+Chúng tôi chính thức hỗ trợ CPU x86 và GPU nvidia. Mặc dù chúng tôi cũng kiểm thử RAGFlow trên nền tảng ARM64, nhưng chúng tôi không duy trì Docker image RAGFlow cho ARM. Nếu bạn đang dùng nền tảng ARM, hãy theo [hướng dẫn này](./develop/build_docker_image.mdx) để build Docker image RAGFlow.
+
+---
+
+### Bạn có cung cấp API để tích hợp với ứng dụng bên thứ ba không?
+
+Các API tương ứng hiện đã có sẵn. Xem [Tham chiếu HTTP API RAGFlow](./references/http_api_reference.md) hoặc [Tham chiếu Python API RAGFlow](./references/python_api_reference.md) để biết thêm thông tin.
+
+---
+
+### Bạn có hỗ trợ xuất đầu ra stream không?
+
+Có, chúng tôi có. Xuất đầu ra stream được bật mặc định trong trợ lý chat và agent. Lưu ý rằng bạn không thể tắt xuất đầu ra stream qua giao diện của RAGFlow. Để tắt xuất đầu ra stream trong câu trả lời, hãy sử dụng Python hoặc RESTful API của RAGFlow:
+
+Python:
+
+- [Tạo chat completion](./references/python_api_reference.md#create-chat-completion)
+- [Trò chuyện với trợ lý chat](./references/python_api_reference.md#converse-with-chat-assistant)
+- [Trò chuyện với agent](./references/python_api_reference.md#converse-with-agent)
+
+RESTful:
+
+- [Tạo chat completion](./references/http_api_reference.md#create-chat-completion)
+- [Trò chuyện với trợ lý chat](./references/http_api_reference.md#converse-with-chat-assistant)
+- [Trò chuyện với agent](./references/http_api_reference.md#converse-with-agent)
+
+---
+
+### Bạn có hỗ trợ chia sẻ cuộc hội thoại qua URL không?
+
+Không, tính năng này không được hỗ trợ.
+
+---
+
+### Bạn có hỗ trợ nhiều vòng hội thoại, sử dụng các hội thoại trước làm ngữ cảnh cho truy vấn hiện tại không?
+
+Có, chúng tôi hỗ trợ tăng cường truy vấn người dùng dựa trên ngữ cảnh hiện có của cuộc trò chuyện đang diễn ra:
+
+1. Trên trang **Chat**, di chuột qua trợ lý mong muốn và chọn **Chỉnh sửa**.
+2. Trong popup **Cấu hình Chat**, nhấn tab **Công cụ Prompt**.
+3. Bật **Tối ưu hóa đa vòng** để kích hoạt tính năng này.
+
+---
+
+### Sự khác biệt chính giữa tìm kiếm AI và chat?
+
+- **Tìm kiếm AI**: Đây là cuộc trò chuyện AI một vòng sử dụng chiến lược truy xuất được xác định trước (tìm kiếm kết hợp với độ tương đồng từ khóa có trọng số và độ tương đồng vector có trọng số) và mô hình chat mặc định của hệ thống. Nó không liên quan đến các chiến lược RAG nâng cao như đồ thị kiến thức, từ khóa tự động, hoặc câu hỏi tự động. Các chunk được truy xuất sẽ được liệt kê bên dưới câu trả lời của mô hình chat.
+- **Chat AI**: Đây là cuộc trò chuyện AI nhiều vòng nơi bạn có thể định nghĩa chiến lược truy xuất (điểm xếp hạng lại có trọng số có thể được sử dụng để thay thế độ tương đồng vector có trọng số trong tìm kiếm kết hợp) và chọn mô hình chat của bạn. Trong chat AI, bạn có thể cấu hình các chiến lược RAG nâng cao, như đồ thị kiến thức, từ khóa tự động và câu hỏi tự động, cho trường hợp cụ thể của bạn. Các chunk được truy xuất không hiển thị cùng với câu trả lời.
+
+Khi gỡ lỗi trợ lý chat của bạn, bạn có thể sử dụng tìm kiếm AI làm tham chiếu để xác minh cài đặt mô hình và chiến lược truy xuất.
+
+---
+
+## Xử lý sự cố
+
+---
+
+### Cách build Docker image RAGFlow từ đầu?
+
+Xem [Build Docker image RAGFlow](./develop/build_docker_image.mdx).
+
+### Không thể truy cập https://huggingface.co
+
+Một RAGFlow được triển khai cục bộ sẽ tải xuống các mô hình OCR từ [trang Huggingface](https://huggingface.co) theo mặc định. Nếu máy của bạn không thể truy cập trang này, lỗi sau xảy ra và phân tích PDF thất bại:
+
+```
+FileNotFoundError: [Errno 2] No such file or directory: '/root/.cache/huggingface/hub/models--InfiniFlow--deepdoc/snapshots/be0c1e50eef6047b412d1800aa89aba4d275f997/ocr.res'
+```
+
+Để khắc phục vấn đề này, hãy sử dụng https://hf-mirror.com thay thế:
+
+1. Dừng tất cả các container và xóa tất cả tài nguyên liên quan:
+
+   ```bash
+   cd ragflow/docker/
+   docker compose down
+   ```
+
+2. Bỏ comment dòng sau trong **ragflow/docker/.env**:
+
+   ```
+   # HF_ENDPOINT=https://hf-mirror.com
+   ```
+
+3. Khởi động máy chủ:
+
+   ```bash
+   docker compose up -d 
+   ```
+
+---
+
+### `MaxRetryError: HTTPSConnectionPool(host='hf-mirror.com', port=443)`
+
+Lỗi này cho thấy bạn không có quyền truy cập Internet hoặc không thể kết nối với hf-mirror.com. Hãy thử các bước sau:
+
+1. Tải xuống thủ công các tệp tài nguyên từ [huggingface.co/InfiniFlow/deepdoc](https://huggingface.co/InfiniFlow/deepdoc) vào thư mục cục bộ **~/deepdoc**.
+2. Thêm volumes vào **docker-compose.yml**, ví dụ:
+
+   ```
+   - ~/deepdoc:/ragflow/rag/res/deepdoc
+   ```
+
+---
+
+### `WARNING: can't find /ragflow/rag/res/borker.tm`
+
+Bỏ qua cảnh báo này và tiếp tục. Tất cả cảnh báo hệ thống có thể bỏ qua.
+
+---
+
+### `network anomaly There is an abnormality in your network and you cannot connect to the server.`
+
+![anomaly](https://github.com/infiniflow/ragflow/assets/93570324/beb7ad10-92e4-4a58-8886-bfb7cbd09e5d)
+
+Bạn sẽ không đăng nhập được vào RAGFlow trừ khi máy chủ được khởi tạo hoàn toàn. Chạy `docker logs -f docker-ragflow-cpu-1`.
+
+*Máy chủ đã khởi động thành công nếu hệ thống của bạn hiển thị kết quả sau:*
+
+```
+     ____   ___    ______ ______ __               
+    / __ \ /   |  / ____// ____// /____  _      __
+   / /_/ // /| | / / __ / /_   / // __ \| | /| / /
+  / _, _// ___ |/ /_/ // __/  / // /_/ /| |/ |/ / 
+ /_/ |_|/_/  |_|\____//_/    /_/ \____/ |__/|__/  
+
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:9380
+ * Running on http://x.x.x.x:9380
+ INFO:werkzeug:Press CTRL+C to quit
+```
+
+---
+
+### `Realtime synonym is disabled, since no redis connection`
+
+Bỏ qua cảnh báo này và tiếp tục. Tất cả cảnh báo hệ thống có thể bỏ qua.
+
+![](https://github.com/infiniflow/ragflow/assets/93570324/ef5a6194-084a-4fe3-bdd5-1c025b40865c)
+
+---
+
+### Tại sao quá trình phân tích tài liệu bị dừng dưới 1%?
+
+![stall](https://github.com/infiniflow/ragflow/assets/93570324/3589cc25-c733-47d5-bbfc-fedb74a3da50)
+
+Nhấn dấu X đỏ bên cạnh thanh 'trạng thái phân tích', sau đó khởi động lại quá trình phân tích để xem vấn đề có còn không. Nếu vấn đề vẫn tiếp diễn và RAGFlow của bạn được triển khai cục bộ, hãy thử các bước sau:
+
+1. Kiểm tra nhật ký máy chủ RAGFlow của bạn để xem nó có đang chạy đúng không:
+
+   ```bash
+   docker logs -f docker-ragflow-cpu-1
+   ```
+
+2. Kiểm tra xem tiến trình **task_executor.py** có tồn tại không.
+3. Kiểm tra xem máy chủ RAGFlow của bạn có thể truy cập hf-mirror.com hoặc huggingface.com không.
+
+---
+
+### Tại sao quá trình phân tích PDF bị dừng gần hoàn thành, trong khi nhật ký không hiện lỗi nào?
+
+Nhấn dấu X đỏ bên cạnh thanh 'trạng thái phân tích', sau đó khởi động lại quá trình phân tích để xem vấn đề có còn không. Nếu vấn đề vẫn tiếp diễn và RAGFlow của bạn được triển khai cục bộ, quá trình phân tích có thể bị tắt do RAM không đủ. Hãy thử tăng phân bổ bộ nhớ bằng cách tăng giá trị `MEM_LIMIT` trong **docker/.env**.
+
+:::note
+Đảm bảo bạn khởi động lại máy chủ RAGFlow để các thay đổi có hiệu lực!
+
+```bash
+docker compose stop
+```
+
+```bash
+docker compose up -d
+```
+
+:::
+
+![nearcompletion](https://github.com/infiniflow/ragflow/assets/93570324/563974c3-f8bb-4ec8-b241-adcda8929cbb)
+
+---
+
+### `Index failure`
+
+Lỗi chỉ số thường cho thấy dịch vụ Elasticsearch không khả dụng.
+
+---
+
+### Cách kiểm tra nhật ký RAGFlow?
+
+```bash
+tail -f ragflow/docker/ragflow-logs/*.log
+```
+
+---
+
+### Cách kiểm tra trạng thái từng thành phần trong RAGFlow?
+
+1. Kiểm tra trạng thái Docker container Elasticsearch:
+
+   ```bash
+   $ docker ps
+   ```
+
+   *Kết quả ví dụ:*
+
+   ```bash
+   5bc45806b680   infiniflow/ragflow:latest     "./entrypoint.sh"        11 hours ago   Up 11 hours               0.0.0.0:80->80/tcp, :::80->80/tcp, 0.0.0.0:443->443/tcp, :::443->443/tcp, 0.0.0.0:9380->9380/tcp, :::9380->9380/tcp   docker-ragflow-cpu-1
+   91220e3285dd   docker.elastic.co/elasticsearch/elasticsearch:8.11.3   "/bin/tini -- /usr/l…"   11 hours ago   Up 11 hours (healthy)     9300/tcp, 0.0.0.0:9200->9200/tcp, :::9200->9200/tcp           ragflow-es-01
+   d8c86f06c56b   mysql:5.7.18        "docker-entrypoint.s…"   7 days ago     Up 16 seconds (healthy)   0.0.0.0:3306->3306/tcp, :::3306->3306/tcp     ragflow-mysql
+   cd29bcb254bc   quay.io/minio/minio:RELEASE.2023-12-20T01-00-02Z       "/usr/bin/docker-ent…"   2 weeks ago    Up 11 hours      0.0.0.0:9001->9001/tcp, :::9001->9001/tcp, 0.0.0.0:9000->9000/tcp, :::9000->9000/tcp     ragflow-minio
+   ```
+
+2. Theo dõi [tài liệu này](./guides/run_health_check.md) để kiểm tra tình trạng sức khỏe của dịch vụ Elasticsearch.
+
+:::danger QUAN TRỌNG
+Trạng thái Docker container không nhất thiết phản ánh trạng thái dịch vụ. Bạn có thể thấy dịch vụ không lành mạnh mặc dù Docker container đang chạy. Các nguyên nhân có thể bao gồm lỗi mạng, số cổng không đúng hoặc vấn đề DNS.
+:::
+
+---
+
+### `Exception: Can't connect to ES cluster`
+
+1. Kiểm tra trạng thái Docker container Elasticsearch:
+
+   ```bash
+   $ docker ps
+   ```
+
+   *Trạng thái của thành phần Elasticsearch lành mạnh sẽ như sau:*  
+
+   ```
+   91220e3285dd   docker.elastic.co/elasticsearch/elasticsearch:8.11.3   "/bin/tini -- /usr/l…"   11 hours ago   Up 11 hours (healthy)     9300/tcp, 0.0.0.0:9200->9200/tcp, :::9200->9200/tcp           ragflow-es-01
+   ```
+
+2. Theo dõi [tài liệu này](./guides/run_health_check.md) để kiểm tra tình trạng sức khỏe của dịch vụ Elasticsearch.
+
+   :::danger QUAN TRỌNG
+   Trạng thái Docker container không nhất thiết phản ánh trạng thái dịch vụ. Bạn có thể thấy dịch vụ không lành mạnh mặc dù Docker container đang chạy. Các nguyên nhân có thể bao gồm lỗi mạng, số cổng không đúng hoặc vấn đề DNS.
+   :::
+
+3. Nếu container của bạn tiếp tục khởi động lại, hãy đảm bảo `vm.max_map_count` >= 262144 theo [README này](https://github.com/infiniflow/ragflow?tab=readme-ov-file#-start-up-the-server). Việc cập nhật giá trị `vm.max_map_count` trong **/etc/sysctl.conf** là cần thiết nếu bạn muốn giữ thay đổi vĩnh viễn. Lưu ý cấu hình này chỉ hoạt động trên Linux.
+
+---
+
+### Không thể khởi động ES container và nhận được `Elasticsearch did not exit normally`
+
+Điều này là do bạn quên cập nhật giá trị `vm.max_map_count` trong **/etc/sysctl.conf** và thay đổi của bạn đã bị reset sau khi khởi động lại hệ thống.
+
+---
+
+### `{"data":null,"code":100,"message":"<NotFound '404: Not Found'>"}`
+
+Địa chỉ IP hoặc số cổng của bạn có thể không đúng. Nếu bạn sử dụng cấu hình mặc định, hãy nhập `http://<IP_MAY_CHU>` (**KHÔNG PHẢI 9380, KHÔNG CẦN SỐ CỔNG!**) trong trình duyệt. Điều này sẽ hoạt động.
+
+---
+
+### `Ollama - Mistral instance running at 127.0.0.1:11434 but cannot add Ollama as model in RagFlow`
+
+Cần địa chỉ IP và cổng Ollama chính xác để thêm mô hình vào Ollama:
+
+- Nếu bạn đang dùng demo.ragflow.io, hãy đảm bảo máy chủ chứa Ollama có địa chỉ IP công khai. Lưu ý 127.0.0.1 không phải địa chỉ IP công khai.
+- Nếu bạn triển khai RAGFlow cục bộ, hãy đảm bảo Ollama và RAGFlow ở trong cùng mạng LAN và có thể giao tiếp với nhau.
+
+Xem [Triển khai LLM cục bộ](./guides/models/deploy_local_llm.mdx) để biết thêm thông tin.
+
+---
+
+### Bạn có cung cấp ví dụ sử dụng DeepDoc để phân tích PDF hoặc các tệp khác không?
+
+Có, chúng tôi có. Xem các tệp Python trong thư mục **rag/app**.
+
+---
+
+### `FileNotFoundError: [Errno 2] No such file or directory`
+
+1. Kiểm tra trạng thái Docker container MinIO:
+
+   ```bash
+   $ docker ps
+   ```
+
+2. Theo dõi [tài liệu này](./guides/run_health_check.md) để kiểm tra tình trạng sức khỏe của dịch vụ Elasticsearch.
+
+:::danger QUAN TRỌNG
+Trạng thái Docker container không nhất thiết phản ánh trạng thái dịch vụ. Bạn có thể thấy dịch vụ không lành mạnh mặc dù Docker container đang chạy. Các nguyên nhân có thể bao gồm lỗi mạng, số cổng không đúng hoặc vấn đề DNS.
+:::
+
+---
+
+## Cách sử dụng
+
+---
+
+### Cách chạy RAGFlow với LLM triển khai cục bộ?
+
+Bạn có thể sử dụng Ollama hoặc Xinference để triển khai LLM cục bộ. Xem [đây](./guides/models/deploy_local_llm.mdx) để biết thêm thông tin.
+
+---
+
+### Cách thêm LLM không được hỗ trợ?
+
+Nếu mô hình của bạn hiện chưa được hỗ trợ nhưng có API tương thích với OpenAI, hãy nhấn **OpenAI-API-Compatible** trên trang **Nhà cung cấp mô hình** để cấu hình mô hình của bạn:
+
+![openai-api-compatible](https://github.com/user-attachments/assets/b1e964f2-b86e-41af-8528-fd8a96dc5f6f)
+
+---
+
+### Cách tích hợp RAGFlow với Ollama?
+
+- Nếu RAGFlow được triển khai cục bộ, hãy đảm bảo RAGFlow và Ollama của bạn ở trong cùng mạng LAN.
+- Nếu bạn đang sử dụng bản demo trực tuyến của chúng tôi, hãy đảm bảo địa chỉ IP của máy chủ Ollama là công khai và có thể truy cập.
+
+Xem [đây](./guides/models/deploy_local_llm.mdx) để biết thêm thông tin.
+
+---
+
+### Cách thay đổi giới hạn kích thước tệp?
+
+Đối với RAGFlow được triển khai cục bộ: tổng giới hạn kích thước tệp mỗi lần tải lên là 1GB, với giới hạn tải lên theo lô là 32 tệp. Không có giới hạn tổng số tệp mỗi tài khoản. Để cập nhật giới hạn 1GB này:
+
+- Trong **docker/.env**, bỏ comment `# MAX_CONTENT_LENGTH=1073741824`, điều chỉnh giá trị khi cần, lưu ý `1073741824` biểu thị 1GB theo byte.
+- Nếu bạn cập nhật giá trị `MAX_CONTENT_LENGTH` trong **docker/.env**, hãy đảm bảo cập nhật `client_max_body_size` trong **nginx/nginx.conf** tương ứng.
+
+:::tip LƯU Ý
+Không nên thay đổi thủ công giới hạn tải lên theo lô 32 tệp. Tuy nhiên, nếu bạn sử dụng HTTP API hoặc Python SDK của RAGFlow để tải lên tệp, giới hạn tải lên theo lô 32 tệp tự động bị loại bỏ.
+:::
+
+---
+
+### `Error: Range of input length should be [1, 30000]`
+
+Lỗi này xảy ra vì có quá nhiều chunk khớp với tiêu chí tìm kiếm của bạn. Hãy thử giảm **TopN** và tăng **Ngưỡng tương đồng** để khắc phục vấn đề:
+
+1. Nhấn **Chat** ở giữa trên cùng trang.
+2. Nhấn chuột phải vào cuộc trò chuyện mong muốn > **Chỉnh sửa** > **Công cụ Prompt**
+3. Giảm **TopN** và/hoặc tăng **Ngưỡng tương đồng**.
+4. Nhấn **OK** để xác nhận thay đổi.
+
+![topn](https://github.com/infiniflow/ragflow/assets/93570324/7ec72ab3-0dd2-4cff-af44-e2663b67b2fc)
+
+---
+
+### Cách lấy API key để tích hợp với ứng dụng bên thứ ba?
+
+Xem [Lấy API key RAGFlow](./develop/acquire_ragflow_api_key.md).
+
+---
+
+### Cách nâng cấp RAGFlow?
+
+Xem [Nâng cấp RAGFlow](./guides/upgrade_ragflow.mdx) để biết thêm thông tin.
+
+---
+
+### Cách chuyển document engine sang Infinity?
+
+Để chuyển document engine từ Elasticsearch sang [Infinity](https://github.com/infiniflow/infinity):
+
+1. Dừng tất cả container đang chạy:  
+
+   ```bash
+   $ docker compose -f docker/docker-compose.yml down -v
+   ```
+   :::caution CẢNH BÁO
+   `-v` sẽ xóa tất cả Docker container volumes, và dữ liệu hiện có sẽ bị xóa.
+   :::
+
+2. Trong **docker/.env**, đặt `DOC_ENGINE=${DOC_ENGINE:-infinity}`
+3. Khởi động lại Docker image: 
+
+   ```bash
+   $ docker compose -f docker-compose.yml up -d
+   ```
+
+---
+
+### Tệp tải lên được lưu ở đâu trong image RAGFlow?
+
+Tất cả các tệp tải lên được lưu trong Minio, giải pháp lưu trữ đối tượng của RAGFlow. Ví dụ, nếu bạn tải tệp trực tiếp vào bộ dữ liệu, nó nằm ở `<knowledgebase_id>/filename`.
+
+---
+
+### Cách điều chỉnh kích thước lô cho phân tích tài liệu và nhúng?
+
+Bạn có thể kiểm soát kích thước lô cho phân tích tài liệu và nhúng bằng cách đặt các biến môi trường `DOC_BULK_SIZE` và `EMBEDDING_BATCH_SIZE`. Tăng các giá trị này có thể cải thiện thông lượng cho xử lý dữ liệu quy mô lớn, nhưng cũng sẽ tăng sử dụng bộ nhớ. Điều chỉnh chúng theo tài nguyên phần cứng của bạn.
+
+---
+
+### Cách tăng tốc độ trả lời câu hỏi của trợ lý chat?
+
+Xem [đây](./guides/chat/best_practices/accelerate_question_answering.mdx).
+
+---
+
+### Cách tăng tốc độ trả lời câu hỏi của Agent?
+
+Xem [đây](./guides/agent/best_practices/accelerate_agent_question_answering.md).
+
+### Cách sử dụng MinerU để phân tích tài liệu PDF?
+
+Từ v0.22.0 trở đi, RAGFlow tích hợp MinerU (&ge; 2.6.3) như một trình phân tích PDF tùy chọn với nhiều backend. Lưu ý RAGFlow chỉ hoạt động như một *remote client* cho MinerU, gọi API MinerU để phân tích PDF và đọc các tệp trả về. Để sử dụng tính năng này:
+
+1. Chuẩn bị một dịch vụ MinerU API có thể truy cập (máy chủ FastAPI).
+2. Trong tệp **.env** hoặc từ trang **Nhà cung cấp mô hình** trong giao diện, cấu hình RAGFlow làm remote client cho MinerU:
+   - `MINERU_APISERVER`: Endpoint API MinerU (ví dụ `http://mineru-host:8886`).
+   - `MINERU_BACKEND`: Backend MinerU.
+   - `MINERU_SERVER_URL`: (tùy chọn) Máy chủ vLLM HTTP downstream.
+   - `MINERU_OUTPUT_DIR`: (tùy chọn) Thư mục cục bộ lưu trữ đầu ra MinerU API.
+   - `MINERU_DELETE_OUTPUT`: Có xóa đầu ra tạm thời không.
+3. Trong giao diện web, điều hướng đến trang **Cấu hình** của bộ dữ liệu và tìm phần **Pipeline nhập liệu**.
+
+---
+
+### Cách sử dụng PaddleOCR để phân tích tài liệu?
+
+Từ v0.24.0 trở đi, RAGFlow tích hợp PaddleOCR như một trình phân tích PDF tùy chọn. RAGFlow chỉ hoạt động như một *remote client* cho PaddleOCR.
+
+Có hai cách chính để cấu hình và sử dụng PaddleOCR trong RAGFlow:
+
+#### 1. Sử dụng API chính thức PaddleOCR
+
+Phương pháp này sử dụng dịch vụ API chính thức của PaddleOCR với access token.
+
+**Bước 1: Cấu hình RAGFlow**
+- **Qua biến môi trường:**
+   ```bash
+   PADDLEOCR_API_URL=https://your-paddleocr-api-endpoint
+   PADDLEOCR_ALGORITHM=PaddleOCR-VL
+   PADDLEOCR_ACCESS_TOKEN=your-access-token-here
+   ```
+
+**Bước 2: Sử dụng trong cấu hình bộ dữ liệu**
+- Trong trang **Cấu hình** của bộ dữ liệu, tìm phần **Pipeline nhập liệu**
+- Chọn **PaddleOCR** từ dropdown **PDF parser**
+
+#### 2. Sử dụng dịch vụ PaddleOCR tự lưu trữ
+
+Phương pháp này cho phép bạn triển khai dịch vụ PaddleOCR của riêng mình.
+
+**Bước 1: Triển khai dịch vụ PaddleOCR**
+Theo dõi [tài liệu serving PaddleOCR](https://www.paddleocr.ai/latest/en/version3.x/deployment/serving.html).
+
+**Bước 2: Cấu hình RAGFlow**
+```bash
+PADDLEOCR_API_URL=http://localhost:8080/layout-parsing
+PADDLEOCR_ALGORITHM=PaddleOCR-VL
+```

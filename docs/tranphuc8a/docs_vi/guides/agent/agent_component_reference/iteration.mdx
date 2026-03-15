@@ -1,0 +1,53 @@
+---
+sidebar_position: 7
+slug: /iteration_component
+sidebar_custom_props: {
+  categoryIcon: LucideRepeat2
+}
+---
+# Thành phần Iteration
+
+Một thành phần tách đầu vào văn bản thành các đoạn và lặp workflow định trước cho từng đoạn.
+
+---
+
+Thành phần **Iteration** có thể chia đầu vào văn bản thành các đoạn và áp dụng workflow nội bộ cho từng đoạn.
+
+## Kịch bản sử dụng
+
+**Iteration** cần thiết khi cần vòng lặp workflow mà số vòng lặp *không cố định*, phụ thuộc số đoạn được tạo từ đầu ra của thành phần agent khác.
+
+## Thành phần nội bộ
+
+### IterationItem
+
+Mỗi **Iteration** có thành phần nội bộ **IterationItem**. Nó là điểm bắt đầu/đầu vào của workflow bên trong **Iteration** và quản lý vòng lặp cho toàn bộ đoạn văn bản được tạo.
+
+### Xây dựng workflow nội bộ
+
+Bạn có thể kéo các thành phần khác vào **Iteration** để tạo workflow nội bộ; các thành phần nội bộ này không hiển thị với phần bên ngoài **Iteration**.
+
+:::danger QUAN TRỌNG
+Để tham chiếu các đoạn văn bản đã tạo từ thành phần nội bộ, chỉ cần thêm biến **Reference** trỏ tới **IterationItem** trong phần **Input** của thành phần nội bộ đó.
+:::
+
+## Cấu hình
+
+### Input
+
+**Iteration** dùng biến đầu vào để chỉ định dữ liệu cần tách đoạn. Bạn có thể đặt nhiều nguồn đầu vào. Nhấp **+ Add variable** để thêm biến với hai loại:
+
+- **Reference**: Dùng đầu ra thành phần hoặc đầu vào người dùng.
+- **Text**: Dùng văn bản tĩnh.
+
+### Delimiter
+
+Dấu phân tách dùng để tách văn bản thành đoạn:
+
+- Comma (Mặc định)
+- Line break
+- Tab
+- Underline
+- Forward slash
+- Dash
+- Semicolon

@@ -1,0 +1,315 @@
+---
+sidebar_position: 2
+slug: /deploy_local_llm
+sidebar_custom_props: {
+  categoryIcon: LucideMonitorCog
+}
+---
+# Triển khai mô hình cục bộ
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+Triển khai và chạy mô hình cục bộ bằng Ollama, Xinference, VLLM, SGLANG hoặc framework khác.
+
+---
+
+RAGFlow hỗ trợ triển khai mô hình cục bộ bằng Ollama, Xinference, IPEX-LLM hoặc jina. Nếu bạn đã có mô hình triển khai cục bộ hoặc muốn bật GPU/CUDA để tăng tốc suy luận, bạn có thể kết nối Ollama hoặc Xinference vào RAGFlow và sử dụng chúng như “server” cục bộ để tương tác với mô hình.
+
+RAGFlow tích hợp liền mạch với Ollama và Xinference, không cần cấu hình môi trường bổ sung. Bạn có thể dùng chúng để triển khai hai loại mô hình cục bộ trong RAGFlow: mô hình chat và mô hình embedding.
+
+:::tip LƯU Ý
+Hướng dẫn này không đi sâu vào cài đặt/cấu hình Ollama hoặc Xinference; trọng tâm là cấu hình trong RAGFlow. Để có thông tin mới nhất, vui lòng tham khảo trang chính thức của Ollama hoặc Xinference.
+:::
+
+## Triển khai mô hình cục bộ bằng Ollama
+
+[Ollama](https://github.com/ollama/ollama) cho phép bạn chạy các mô hình ngôn ngữ lớn mã nguồn mở được triển khai cục bộ. Nó đóng gói trọng số mô hình, cấu hình và dữ liệu thành một gói duy nhất (định nghĩa bởi Modelfile), đồng thời tối ưu thiết lập và cấu hình, bao gồm cả sử dụng GPU.
+
+:::note
+- Xem thông tin tải Ollama tại [đây](https://github.com/ollama/ollama?tab=readme-ov-file#ollama).
+- Danh sách mô hình và biến thể: [Ollama model library](https://ollama.com/library).
+:::
+
+### 1. Triển khai Ollama bằng Docker
+
+Ollama có thể [cài từ binaries](https://ollama.com/download) hoặc [triển khai bằng Docker](https://hub.docker.com/r/ollama/ollama):
+
+```bash
+$ sudo docker run --name ollama -p 11434:11434 ollama/ollama
+> time=2024-12-02T02:20:21.360Z level=INFO source=routes.go:1248 msg="Listening on [::]:11434 (version 0.4.6)"
+> time=2024-12-02T02:20:21.360Z level=INFO source=common.go:49 msg="Dynamic LLM libraries" runners="[cpu cpu_avx cpu_avx2 cuda_v11 cuda_v12]"
+```
+
+Đảm bảo Ollama lắng nghe trên mọi IP:
+```bash
+$ sudo ss -tunlp | grep 11434
+> tcp   LISTEN 0      4096                  0.0.0.0:11434      0.0.0.0:*    users:(("docker-proxy",pid=794507,fd=4))
+> tcp   LISTEN 0      4096                     [::]:11434         [::]:*    users:(("docker-proxy",pid=794513,fd=4))
+```
+
+Kéo mô hình theo nhu cầu. Khuyến nghị bắt đầu với `llama3.2` (chat 3B) và `bge-m3` (embedding 567M):
+```bash
+$ sudo docker exec ollama ollama pull llama3.2
+> pulling dde5aa3fc5ff... 100% ▕████████████████▏ 2.0 GB
+> success
+```
+
+```bash
+$ sudo docker exec ollama ollama pull bge-m3
+> pulling daec91ffb5dd... 100% ▕████████████████▏ 1.2 GB
+> success
+```
+
+### 2. Tìm URL Ollama và xác nhận truy cập được
+
+- Nếu RAGFlow chạy trong Docker, localhost trong container RAGFlow ánh xạ thành `host.docker.internal`. Nếu Ollama chạy cùng máy host, URL phù hợp là `http://host.docker.internal:11434/`:
+```bash
+$ sudo docker exec -it docker-ragflow-cpu-1 bash
+$ curl http://host.docker.internal:11434/
+> Ollama is running
+```
+
+- Nếu RAGFlow chạy từ source và Ollama cùng máy:
+```bash
+$ curl http://localhost:11434/
+> Ollama is running
+```
+
+- Nếu RAGFlow và Ollama khác máy:
+```bash
+$ curl http://${IP_OF_OLLAMA_MACHINE}:11434/
+> Ollama is running
+```
+
+### 3. Thêm Ollama
+
+Trong RAGFlow, nhấp avatar góc trên phải **>** **Model providers** và thêm Ollama:
+
+![add ollama](https://github.com/infiniflow/ragflow/assets/93570324/10635088-028b-4b3d-add9-5c5a6e626814)
+
+### 4. Hoàn tất cấu hình cơ bản Ollama
+
+1. Đảm bảo tên và loại mô hình khớp với mô hình đã pull ở bước 1, ví dụ (`llama3.2`, `chat`) hoặc (`bge-m3`, `embedding`).
+2. Điền base URL: `http://host.docker.internal:11434`, `http://localhost:11434` hoặc `http://${IP_OF_OLLAMA_MACHINE}:11434`.
+3. TÙY CHỌN: Bật **Does it support Vision?** nếu mô hình có khả năng image-to-text.
+
+:::caution CẢNH BÁO
+Cấu hình base URL sai sẽ gây lỗi:
+```bash
+Max retries exceeded with url: /api/chat (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0xffff98b81ff0>: Failed to establish a new connection: [Errno 111] Connection refused'))
+```
+:::
+
+### 5. Cập nhật System Model Settings
+
+Nhấp avatar **>** **Model providers** **>** **System Model Settings** để cập nhật mô hình:
+
+- Bạn sẽ thấy **llama3.2** trong danh sách **Chat model**, và **bge-m3** trong danh sách **Embedding model**.
+
+### 6. Cập nhật Chat Configuration
+
+Cập nhật mô hình tương ứng trong **Chat Configuration**.
+
+## Triển khai mô hình cục bộ bằng Xinference
+
+Xorbits Inference ([Xinference](https://github.com/xorbitsai/inference)) giúp khai thác tối đa tiềm năng của các mô hình AI hiện đại.
+
+:::note
+- Cài Xinference: [here](https://inference.readthedocs.io/en/latest/getting_started/).
+- Danh sách mô hình hỗ trợ: [Builtin Models](https://inference.readthedocs.io/en/latest/models/builtin/).
+:::
+
+Ví dụ triển khai **Mistral** với Xinference:
+
+### 1. Kiểm tra firewall
+
+Đảm bảo máy host cho phép kết nối inbound cổng 9997.
+
+### 2. Khởi chạy Xinference instance
+
+```bash
+$ xinference-local --host 0.0.0.0 --port 9997
+```
+
+### 3. Khởi chạy mô hình cục bộ
+
+```bash
+$ xinference launch -u mistral --model-name mistral-v0.1 --size-in-billions 7 --model-format pytorch --quantization ${quantization}
+```
+
+### 4. Thêm Xinference
+
+Trong RAGFlow, nhấp avatar **>** **Model providers** và thêm Xinference.
+
+### 5. Hoàn tất cấu hình cơ bản Xinference
+
+Nhập base URL có thể truy cập, ví dụ `http://<your-xinference-endpoint-domain>:9997/v1`.
+
+> Với rerank model, dùng `http://<your-xinference-endpoint-domain>:9997/v1/rerank`.
+
+### 6. Cập nhật System Model Settings
+
+Nhấp avatar **>** **Model providers** **>** **System Model Settings** để cập nhật mô hình.
+
+### 7. Cập nhật Chat Configuration
+
+Cập nhật chat model tương ứng trong **Chat Configuration**.
+
+## Triển khai mô hình cục bộ bằng IPEX-LLM
+
+[IPEX-LLM](https://github.com/intel-analytics/ipex-llm) là thư viện PyTorch giúp chạy LLM trên CPU/GPU Intel cục bộ (kể cả iGPU hoặc GPU rời như Arc/Flex/Max) với độ trễ thấp. Nó hỗ trợ Ollama trên Linux và Windows.
+
+Ví dụ triển khai **Qwen2** bằng Ollama tăng tốc IPEX-LLM:
+
+### 1. Kiểm tra firewall
+
+Đảm bảo host cho phép inbound cổng 11434:
+
+```bash
+sudo ufw allow 11434/tcp
+```
+
+### 2. Khởi chạy Ollama service bằng IPEX-LLM
+
+#### 2.1 Cài IPEX-LLM cho Ollama
+
+Xem hướng dẫn chi tiết tại:
+- [Prerequisites](https://github.com/intel-analytics/ipex-llm/blob/main/docs/mddocs/Quickstart/llama_cpp_quickstart.md#0-prerequisites)
+- [Install IPEX-LLM cpp with Ollama binaries](https://github.com/intel-analytics/ipex-llm/blob/main/docs/mddocs/Quickstart/llama_cpp_quickstart.md#1-install-ipex-llm-for-llamacpp)
+
+Sau cài đặt, bạn sẽ có môi trường Conda (ví dụ `llm-cpp`) để chạy Ollama với IPEX-LLM.
+
+#### 2.2 Khởi tạo Ollama
+
+<Tabs defaultValue="linux" values={[{label: 'Linux', value: 'linux'},{label: 'Windows', value: 'windows'}]}>
+  <TabItem value="linux">
+
+  ```bash
+  conda activate llm-cpp
+  init-ollama
+  ```
+  </TabItem>
+  <TabItem value="windows">
+
+  Chạy bằng quyền quản trị trong Miniforge Prompt:
+
+  ```cmd
+  conda activate llm-cpp
+  init-ollama.bat
+  ```
+  </TabItem>
+</Tabs>
+
+#### 2.3 Khởi chạy Ollama service
+
+- Đặt `OLLAMA_NUM_GPU=999` để đảm bảo toàn bộ layer chạy trên Intel GPU.
+- Với Intel Arc A-Series trên Linux (Kernel 6.2), đặt thêm:
+
+```bash
+export SYCL_PI_LEVEL_ZERO_USE_IMMEDIATE_COMMANDLISTS=1
+```
+
+<Tabs defaultValue="linux" values={[{label: 'Linux', value: 'linux'},{label: 'Windows', value: 'windows'}]}>
+  <TabItem value="linux">
+
+  ```bash
+  export OLLAMA_NUM_GPU=999
+  export no_proxy=localhost,127.0.0.1
+  export ZES_ENABLE_SYSMAN=1
+  source /opt/intel/oneapi/setvars.sh
+  export SYCL_CACHE_PERSISTENT=1
+
+  ./ollama serve
+  ```
+
+  </TabItem>
+  <TabItem value="windows">
+
+  ```cmd
+  set OLLAMA_NUM_GPU=999
+  set no_proxy=localhost,127.0.0.1
+  set ZES_ENABLE_SYSMAN=1
+  set SYCL_CACHE_PERSISTENT=1
+
+  ollama serve
+  ```
+  </TabItem>
+</Tabs>
+
+:::tip LƯU Ý
+Để Ollama nhận kết nối từ mọi IP, dùng `OLLAMA_HOST=0.0.0.0 ./ollama serve` thay vì chỉ `./ollama serve`.
+:::
+
+### 3. Pull và chạy mô hình Ollama
+
+#### 3.1 Pull mô hình
+
+Mở terminal mới và chạy `./ollama pull <model_name>` (Linux) hoặc `ollama.exe pull <model_name>` (Windows), ví dụ `qwen2:latest`.
+
+#### 3.2 Chạy mô hình
+
+<Tabs defaultValue="linux" values={[{label: 'Linux', value: 'linux'},{label: 'Windows', value: 'windows'}]}>
+  <TabItem value="linux">
+
+  ```bash
+  ./ollama run qwen2:latest
+  ```
+  </TabItem>
+  <TabItem value="windows">
+
+  ```cmd
+  ollama run qwen2:latest
+  ```
+  </TabItem>
+</Tabs>
+
+### 4. Cấu hình RAGFlow
+
+Để bật Ollama tăng tốc IPEX-LLM trong RAGFlow, thực hiện giống mục *Triển khai mô hình cục bộ bằng Ollama*:
+
+1. Thêm Ollama
+2. Hoàn tất cấu hình cơ bản Ollama
+3. Cập nhật System Model Settings
+4. Cập nhật Chat Configuration
+
+### 5. Triển khai VLLM
+
+Ubuntu 22.04/24.04:
+
+```bash
+pip install vllm
+```
+
+#### 5.1 Chạy VLLM theo thực tiễn tốt nhất
+
+```bash
+nohup vllm serve /data/Qwen3-8B --served-model-name Qwen3-8B-FP8 --dtype auto --port 1025 --gpu-memory-utilization 0.90 --tool-call-parser hermes --enable-auto-tool-choice  > /var/log/vllm_startup1.log 2>&1 &
+```
+
+Xem log:
+```bash
+tail -f -n 100 /var/log/vllm_startup1.log
+```
+
+Khi thấy thông báo sau thì engine sẵn sàng truy cập:
+```bash
+Starting vLLM API server 0 on http://0.0.0.0:1025
+Started server process [19177]
+Application startup complete.
+```
+
+#### 5.2 Tích hợp RAGFlow với VLLM (chat/embedding/rerank) qua WebUI
+
+Vào `setting -> model providers -> search -> vllm -> add`, cấu hình như sau:
+
+![add vllm](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/ragflow_vllm.png)
+
+Chọn mô hình chat vllm làm mặc định:
+
+![chat](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/ragflow_vllm1.png)
+
+#### 5.3 Chat với mô hình vllm
+
+`create chat -> create conversations-chat` như sau:
+
+![chat](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/ragflow_vllm2.png)

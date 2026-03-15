@@ -1,0 +1,11 @@
+{
+  "label": "Agent",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "RAGFlow v0.8.0 giới thiệu cơ chế agent với trình biên tập workflow không cần code ở frontend và framework điều phối tác vụ dựa trên đồ thị ở backend."
+  },
+  "customProps": {
+    "categoryIcon": "RagAiAgent"
+  }
+}

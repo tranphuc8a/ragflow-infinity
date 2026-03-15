@@ -1,0 +1,144 @@
+---
+sidebar_position: 3
+slug: /retrieval_component
+sidebar_custom_props: {
+  categoryIcon: LucideFolderSearch
+}
+---
+# Thành phần Retrieval
+
+Thành phần truy xuất thông tin từ các tập dữ liệu được chỉ định.
+
+## Kịch bản
+
+Thành phần **Retrieval** là thiết yếu trong hầu hết các kịch bản RAG, nơi thông tin được trích xuất từ các tập dữ liệu được chỉ định trước khi gửi đến LLM để tạo nội dung. Thành phần **Retrieval** có thể hoạt động như một mô-đun quy trình độc lập hoặc như một công cụ cho thành phần **Agent**. Trong vai trò sau, thành phần **Agent** có quyền kiểm soát tự chủ khi nào cần gọi nó để truy vấn và truy xuất.
+
+Ảnh chụp màn hình sau đây cho thấy thiết kế tham chiếu sử dụng thành phần **Retrieval**, trong đó thành phần phục vụ như một công cụ cho thành phần **Agent**. Bạn có thể tìm thấy nó từ mẫu Agent **Report Agent Using Knowledge Base**.
+
+![retrieval_reference_design](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/retrieval_reference_design.jpg)
+
+## Điều kiện tiên quyết
+
+Đảm bảo bạn [đã cấu hình đúng tập dữ liệu mục tiêu của mình](../../dataset/configure_knowledge_base.md).
+
+## Bắt đầu nhanh
+
+### 1. Nhấp vào thành phần **Retrieval** để hiển thị bảng cấu hình
+
+Bảng cấu hình tương ứng xuất hiện ở bên phải canvas. Sử dụng bảng này để xác định và tinh chỉnh hành vi tìm kiếm của thành phần **Retrieval**.
+
+### 2. Nhập (các) biến truy vấn
+
+Thành phần **Retrieval** phụ thuộc vào các biến truy vấn để chỉ định các truy vấn của nó.
+
+:::caution QUAN TRỌNG
+- Nếu bạn sử dụng thành phần **Retrieval** như một mô-đun quy trình độc lập, hãy nhập các biến truy vấn vào hộp văn bản **Input Variables**.
+- Nếu nó được sử dụng như một công cụ cho thành phần **Agent**, hãy nhập các biến truy vấn vào trường **User prompt** của thành phần **Agent**.
+:::
+
+Theo mặc định, bạn có thể sử dụng `sys.query`, đây là truy vấn của người dùng và đầu ra mặc định của thành phần **Begin**. Tất cả các biến toàn cục được xác định trước thành phần **Retrieval** cũng có thể được sử dụng như các câu lệnh truy vấn. Sử dụng nút `(x)` hoặc gõ `/` để hiển thị tất cả các biến truy vấn có sẵn.
+
+### 3. Chọn (các) tập dữ liệu để truy vấn
+
+Bạn có thể chỉ định một hoặc nhiều tập dữ liệu để truy xuất dữ liệu. Nếu chọn nhiều, hãy đảm bảo chúng sử dụng cùng một mô hình nhúng.
+
+### 4. Mở rộng **Advanced Settings** để cấu hình phương pháp truy xuất
+
+Theo mặc định, sự kết hợp giữa độ tương đồng từ khóa có trọng số và độ tương đồng cosine vector có trọng số được sử dụng để truy xuất. Nếu một mô hình rerank được chọn, sự kết hợp giữa độ tương đồng từ khóa có trọng số và điểm reranking có trọng số sẽ được sử dụng thay thế.
+
+Là bước khởi đầu, bạn có thể bỏ qua bước này để giữ nguyên phương pháp truy xuất mặc định.
+
+:::caution CẢNH BÁO
+Sử dụng mô hình rerank sẽ *tăng đáng kể* thời gian phản hồi của hệ thống.
+:::
+
+### 5. Bật tìm kiếm đa ngôn ngữ
+
+Nếu truy vấn của người dùng khác với ngôn ngữ của tập dữ liệu, bạn có thể chọn các ngôn ngữ mục tiêu trong menu thả xuống **Cross-language search**. Mô hình sau đó sẽ dịch các truy vấn để đảm bảo khớp chính xác ý nghĩa ngữ nghĩa qua các ngôn ngữ.
+
+### 6. Kiểm tra kết quả truy xuất
+
+Nhấp vào nút **Run** ở đầu canvas để kiểm tra kết quả truy xuất.
+
+### 7. Chọn thành phần tiếp theo
+
+Khi cần thiết, nhấp vào nút **+** trên thành phần **Retrieval** để chọn thành phần tiếp theo trong quy trình từ danh sách thả xuống.
+
+## Cấu hình
+
+### Query variables
+
+*Bắt buộc*
+
+Chọn nguồn truy vấn để truy xuất. Mặc định là `sys.query`, đầu ra mặc định của thành phần **Begin**.
+
+Thành phần **Retrieval** dựa vào các biến truy vấn để chỉ định các truy vấn của nó. Tất cả các biến toàn cục được xác định trước thành phần **Retrieval** cũng có thể được sử dụng như các truy vấn. Sử dụng nút `(x)` hoặc gõ `/` để hiển thị tất cả các biến truy vấn có sẵn.
+
+### Retrieval from
+
+Chọn (các) tập dữ liệu và bộ nhớ để truy xuất dữ liệu.
+
+- Nếu không có tập dữ liệu nào được chọn, có nghĩa là các cuộc hội thoại với agent sẽ không dựa trên bất kỳ tập dữ liệu nào, hãy đảm bảo trường **Empty response** để trống để tránh lỗi.
+- Nếu bạn chọn nhiều tập dữ liệu, bạn phải đảm bảo rằng các tập dữ liệu bạn chọn sử dụng cùng một mô hình nhúng; nếu không, thông báo lỗi sẽ xuất hiện.
+
+![](https://raw.githubusercontent.com/infiniflow/ragflow-docs/main/images/retrieve_from_memory.PNG)
+
+### Similarity threshold
+
+RAGFlow sử dụng kết hợp độ tương đồng từ khóa có trọng số và độ tương đồng cosine vector có trọng số trong quá trình truy xuất. Tham số này đặt ngưỡng cho độ tương đồng giữa truy vấn của người dùng và các đoạn được lưu trong tập dữ liệu. Bất kỳ đoạn nào có điểm tương đồng thấp hơn ngưỡng này sẽ bị loại trừ khỏi kết quả.
+
+Mặc định là 0.2.
+
+### Vector similarity weight
+
+Tham số này đặt trọng số của độ tương đồng vector trong điểm tương đồng tổng hợp. Tổng của hai trọng số phải bằng 1.0. Giá trị mặc định là 0.3, có nghĩa là trọng số của độ tương đồng từ khóa trong tìm kiếm kết hợp là 1 - 0.3 = 0.7.
+
+### Top N
+
+Tham số này chọn "Top N" đoạn từ các đoạn được truy xuất và cung cấp cho LLM.
+
+Mặc định là 8.
+
+### Rerank model
+
+*Tùy chọn*
+
+Nếu một mô hình rerank được chọn, sự kết hợp giữa độ tương đồng từ khóa có trọng số và điểm reranking có trọng số sẽ được sử dụng để truy xuất.
+
+:::caution CẢNH BÁO
+Sử dụng mô hình rerank sẽ *tăng đáng kể* thời gian phản hồi của hệ thống.
+:::
+
+### Empty response
+
+- Đặt đây là phản hồi nếu không có kết quả nào được truy xuất từ (các) tập dữ liệu cho truy vấn của bạn, hoặc
+- Để trường này trống để cho phép mô hình chat ứng biến khi không tìm thấy gì.
+
+:::caution CẢNH BÁO
+Nếu bạn không chỉ định tập dữ liệu, bạn phải để trường này trống; nếu không, lỗi sẽ xảy ra.
+:::
+
+### Cross-language search
+
+Chọn một hoặc nhiều ngôn ngữ cho tìm kiếm đa ngôn ngữ. Nếu không có ngôn ngữ nào được chọn, hệ thống tìm kiếm với truy vấn gốc.
+
+### Use knowledge graph
+
+:::caution QUAN TRỌNG
+Trước khi bật tính năng này, hãy đảm bảo bạn đã [xây dựng đúng đồ thị tri thức từ mỗi tập dữ liệu mục tiêu](../../dataset/construct_knowledge_graph.md).
+:::
+
+Có sử dụng (các) đồ thị tri thức trong (các) tập dữ liệu được chỉ định trong quá trình truy xuất cho hỏi đáp đa bước không. Khi bật, điều này sẽ liên quan đến các tìm kiếm lặp đi lặp lại trên các đoạn thực thể, mối quan hệ và báo cáo cộng đồng, tăng đáng kể thời gian truy xuất.
+
+### Output
+
+Tên biến toàn cục cho đầu ra của thành phần **Retrieval**, có thể được tham chiếu bởi các thành phần khác trong quy trình.
+
+## Câu hỏi thường gặp
+
+### Cách giảm thời gian phản hồi?
+
+Hãy xem qua danh sách kiểm tra sau để có hiệu suất tốt nhất:
+
+- Để trống trường **Rerank model** để vô hiệu hóa rerank.
+- Tắt **Use knowledge graph**.

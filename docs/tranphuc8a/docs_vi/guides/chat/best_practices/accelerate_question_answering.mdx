@@ -1,0 +1,48 @@
+---
+sidebar_position: 1
+slug: /accelerate_question_answering
+---
+
+# Tăng tốc trả lời
+import APITable from '@site/src/components/APITable';
+
+Danh sách kiểm tra để tăng tốc độ trả lời câu hỏi cho trợ lý chat của bạn.
+
+---
+
+Lưu ý rằng một số cài đặt của bạn có thể tiêu tốn nhiều thời gian đáng kể. Nếu bạn thường xuyên thấy việc trả lời câu hỏi mất nhiều thời gian, đây là danh sách kiểm tra để cân nhắc:
+
+- Tắt **Multi-turn optimization** sẽ giảm thời gian cần thiết để nhận câu trả lời từ LLM.
+- Để trống trường **Rerank model** sẽ giảm đáng kể thời gian truy xuất.
+- Tắt chế độ **Reasoning** sẽ giảm thời gian suy nghĩ của LLM. Đối với mô hình như Qwen3, bạn cũng cần thêm `/no_think` vào system prompt để tắt lập luận.
+- Khi sử dụng mô hình rerank, hãy đảm bảo bạn có GPU để tăng tốc; nếu không, quá trình reranking sẽ *cực kỳ* chậm.
+
+:::tip LƯU Ý
+Lưu ý rằng các mô hình rerank là thiết yếu trong một số kịch bản nhất định. Luôn có sự đánh đổi giữa tốc độ và hiệu suất; bạn phải cân nhắc ưu và nhược điểm cho trường hợp cụ thể của mình.
+:::
+
+- Tắt **Keyword analysis** sẽ giảm thời gian nhận câu trả lời từ LLM.
+- Khi chat với trợ lý chat của bạn, nhấp vào biểu tượng bóng đèn ở trên hội thoại *hiện tại* và cuộn xuống cửa sổ popup để xem thời gian thực hiện từng nhiệm vụ:
+   ![enlighten](https://github.com/user-attachments/assets/fedfa2ee-21a7-451b-be66-20125619923c)  
+
+
+```mdx-code-block
+<APITable>
+```
+
+| Tên mục           | Mô tả                                                                                         |
+| ----------------- | --------------------------------------------------------------------------------------------- |
+| Total             | Tổng thời gian dành cho vòng hội thoại này, bao gồm truy xuất đoạn và tạo câu trả lời.       |
+| Check LLM         | Thời gian xác thực LLM được chỉ định.                                                         |
+| Create retriever  | Thời gian tạo bộ truy xuất đoạn.                                                              |
+| Bind embedding    | Thời gian khởi tạo một instance mô hình nhúng.                                                |
+| Bind LLM          | Thời gian khởi tạo một instance LLM.                                                          |
+| Tune question     | Thời gian tối ưu hóa truy vấn của người dùng sử dụng bối cảnh của cuộc hội thoại đa lượt.   |
+| Bind reranker     | Thời gian khởi tạo một instance mô hình reranker để truy xuất đoạn.                          |
+| Generate keywords | Thời gian trích xuất từ khóa từ truy vấn của người dùng.                                     |
+| Retrieval         | Thời gian truy xuất các đoạn.                                                                 |
+| Generate answer   | Thời gian tạo câu trả lời.                                                                    |
+
+```mdx-code-block
+</APITable>
+```
