@@ -1,0 +1,11 @@
+{
+  "label": "Dev deploy guide",
+  "position": 1,
+  "link": {
+    "type": "generated-index",
+    "description": "Hướng dẫn build, run và debug RAGFlow cho môi trường phát triển."
+  },
+  "customProps": {
+    "sidebarIcon": "LucideMonitorCog"
+  }
+}
