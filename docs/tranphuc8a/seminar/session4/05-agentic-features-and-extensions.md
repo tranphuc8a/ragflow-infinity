@@ -1,0 +1,222 @@
+﻿# 05 - Tính năng nâng cao: Agentic và mở rộng
+
+## 1. Vì sao cần mở rộng khỏi RAG cơ bản
+
+Nhiều bài toán cần:
+- Gọi tool bên ngoài.
+- Lập kế hoạch nhiều bước.
+- Kết hợp memory và knowledge retrieval.
+
+## 2. Liên hệ trong RAGFlow
+
+- Hệ sinh thái canvas/agent builder.
+- Dòng phát triển context engine (knowledge + memory + tool orchestration).
+
+## 3. Góc nhìn kiến trúc
+
+- RAG là nền tảng tri thức.
+- Agentic layer mở rộng khả năng hành động và tự động hóa.
+- Cần quản trị chặt về quan sát, bảo mật và chi phí.
+
+## Phan tich chuyen sau bo sung
+
+- [05-agentic-features-and-extensions] Rule 1: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [05-agentic-features-and-extensions] Check 1: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 1: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 1: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 2: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [05-agentic-features-and-extensions] Check 2: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 2: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 2: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 3: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [05-agentic-features-and-extensions] Check 3: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 3: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 3: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 4: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [05-agentic-features-and-extensions] Check 4: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 4: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 4: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 5: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [05-agentic-features-and-extensions] Check 5: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 5: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 5: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 6: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [05-agentic-features-and-extensions] Check 6: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 6: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 6: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 7: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [05-agentic-features-and-extensions] Check 7: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 7: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 7: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 8: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [05-agentic-features-and-extensions] Check 8: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 8: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 8: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 9: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [05-agentic-features-and-extensions] Check 9: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 9: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 9: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 10: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [05-agentic-features-and-extensions] Check 10: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 10: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 10: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 11: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [05-agentic-features-and-extensions] Check 11: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 11: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 11: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 12: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [05-agentic-features-and-extensions] Check 12: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 12: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 12: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 13: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [05-agentic-features-and-extensions] Check 13: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 13: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 13: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 14: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [05-agentic-features-and-extensions] Check 14: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 14: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 14: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 15: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [05-agentic-features-and-extensions] Check 15: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 15: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 15: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 16: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [05-agentic-features-and-extensions] Check 16: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 16: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 16: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 17: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [05-agentic-features-and-extensions] Check 17: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 17: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 17: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 18: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [05-agentic-features-and-extensions] Check 18: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 18: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 18: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 19: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [05-agentic-features-and-extensions] Check 19: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 19: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 19: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 20: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [05-agentic-features-and-extensions] Check 20: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 20: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 20: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 21: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [05-agentic-features-and-extensions] Check 21: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 21: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 21: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 22: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [05-agentic-features-and-extensions] Check 22: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 22: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 22: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 23: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [05-agentic-features-and-extensions] Check 23: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 23: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 23: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 24: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [05-agentic-features-and-extensions] Check 24: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 24: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 24: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 25: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [05-agentic-features-and-extensions] Check 25: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 25: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 25: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 26: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [05-agentic-features-and-extensions] Check 26: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 26: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 26: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 27: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [05-agentic-features-and-extensions] Check 27: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 27: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 27: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 28: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [05-agentic-features-and-extensions] Check 28: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 28: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 28: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 29: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [05-agentic-features-and-extensions] Check 29: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 29: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 29: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 30: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [05-agentic-features-and-extensions] Check 30: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 30: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 30: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 31: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [05-agentic-features-and-extensions] Check 31: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 31: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 31: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 32: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [05-agentic-features-and-extensions] Check 32: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 32: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 32: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 33: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [05-agentic-features-and-extensions] Check 33: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 33: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 33: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 34: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [05-agentic-features-and-extensions] Check 34: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 34: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 34: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 35: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [05-agentic-features-and-extensions] Check 35: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 35: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 35: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 36: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [05-agentic-features-and-extensions] Check 36: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 36: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 36: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 37: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [05-agentic-features-and-extensions] Check 37: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 37: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 37: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 38: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [05-agentic-features-and-extensions] Check 38: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 38: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 38: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 39: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [05-agentic-features-and-extensions] Check 39: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 39: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 39: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 40: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [05-agentic-features-and-extensions] Check 40: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 40: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 40: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 41: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [05-agentic-features-and-extensions] Check 41: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 41: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 41: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 42: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [05-agentic-features-and-extensions] Check 42: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 42: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 42: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 43: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [05-agentic-features-and-extensions] Check 43: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 43: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 43: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 44: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [05-agentic-features-and-extensions] Check 44: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 44: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 44: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 45: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [05-agentic-features-and-extensions] Check 45: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 45: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 45: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 46: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [05-agentic-features-and-extensions] Check 46: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 46: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 46: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 47: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [05-agentic-features-and-extensions] Check 47: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 47: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 47: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 48: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [05-agentic-features-and-extensions] Check 48: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 48: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 48: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 49: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [05-agentic-features-and-extensions] Check 49: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 49: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 49: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [05-agentic-features-and-extensions] Rule 50: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [05-agentic-features-and-extensions] Check 50: ghi ro input, output, metric, baseline, va rollback rule.
+- [05-agentic-features-and-extensions] Ops 50: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [05-agentic-features-and-extensions] Learn 50: tong ket bai hoc de team dung lai cho cac case tuong tu.

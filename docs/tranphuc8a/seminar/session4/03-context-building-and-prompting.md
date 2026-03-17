@@ -1,0 +1,222 @@
+﻿# 03 - Context Building và Prompt Construction
+
+## 1. Nguyên tắc xây context
+
+- Chọn chunk liên quan nhất, không chọn nhiều nhất.
+- Ưu tiên tín hiệu rõ ràng và ít nhiễu.
+- Giữ cân bằng giữa độ bao phủ và token budget.
+
+## 2. Prompt trong RAGFlow
+
+- `prompt_config["system"]` chứa khung điều khiển.
+- Biến `knowledge` nhận context retrieve.
+- `message_fit_in(...)` đảm bảo không vượt context window.
+
+## 3. Thực hành tốt
+
+- Prompt rõ nhiệm vụ và ràng buộc nguồn tri thức.
+- Nếu thiếu context, nên phản hồi theo chính sách an toàn thay vì bịa.
+- Theo dõi token usage và latency để tối ưu dần.
+
+## Phan tich chuyen sau bo sung
+
+- [03-context-building-and-prompting] Rule 1: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-context-building-and-prompting] Check 1: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 1: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 1: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 2: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-context-building-and-prompting] Check 2: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 2: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 2: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 3: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-context-building-and-prompting] Check 3: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 3: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 3: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 4: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-context-building-and-prompting] Check 4: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 4: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 4: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 5: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-context-building-and-prompting] Check 5: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 5: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 5: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 6: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-context-building-and-prompting] Check 6: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 6: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 6: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 7: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-context-building-and-prompting] Check 7: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 7: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 7: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 8: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-context-building-and-prompting] Check 8: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 8: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 8: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 9: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-context-building-and-prompting] Check 9: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 9: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 9: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 10: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-context-building-and-prompting] Check 10: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 10: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 10: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 11: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-context-building-and-prompting] Check 11: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 11: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 11: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 12: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-context-building-and-prompting] Check 12: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 12: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 12: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 13: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-context-building-and-prompting] Check 13: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 13: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 13: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 14: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-context-building-and-prompting] Check 14: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 14: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 14: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 15: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-context-building-and-prompting] Check 15: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 15: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 15: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 16: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-context-building-and-prompting] Check 16: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 16: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 16: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 17: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-context-building-and-prompting] Check 17: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 17: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 17: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 18: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-context-building-and-prompting] Check 18: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 18: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 18: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 19: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-context-building-and-prompting] Check 19: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 19: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 19: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 20: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-context-building-and-prompting] Check 20: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 20: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 20: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 21: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-context-building-and-prompting] Check 21: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 21: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 21: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 22: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-context-building-and-prompting] Check 22: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 22: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 22: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 23: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-context-building-and-prompting] Check 23: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 23: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 23: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 24: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-context-building-and-prompting] Check 24: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 24: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 24: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 25: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-context-building-and-prompting] Check 25: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 25: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 25: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 26: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-context-building-and-prompting] Check 26: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 26: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 26: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 27: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-context-building-and-prompting] Check 27: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 27: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 27: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 28: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-context-building-and-prompting] Check 28: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 28: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 28: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 29: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-context-building-and-prompting] Check 29: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 29: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 29: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 30: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-context-building-and-prompting] Check 30: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 30: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 30: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 31: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-context-building-and-prompting] Check 31: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 31: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 31: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 32: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-context-building-and-prompting] Check 32: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 32: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 32: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 33: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-context-building-and-prompting] Check 33: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 33: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 33: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 34: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-context-building-and-prompting] Check 34: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 34: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 34: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 35: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-context-building-and-prompting] Check 35: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 35: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 35: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 36: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-context-building-and-prompting] Check 36: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 36: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 36: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 37: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-context-building-and-prompting] Check 37: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 37: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 37: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 38: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-context-building-and-prompting] Check 38: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 38: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 38: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 39: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-context-building-and-prompting] Check 39: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 39: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 39: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 40: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-context-building-and-prompting] Check 40: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 40: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 40: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 41: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-context-building-and-prompting] Check 41: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 41: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 41: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 42: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-context-building-and-prompting] Check 42: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 42: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 42: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 43: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-context-building-and-prompting] Check 43: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 43: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 43: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 44: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-context-building-and-prompting] Check 44: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 44: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 44: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 45: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-context-building-and-prompting] Check 45: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 45: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 45: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 46: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-context-building-and-prompting] Check 46: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 46: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 46: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 47: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-context-building-and-prompting] Check 47: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 47: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 47: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 48: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-context-building-and-prompting] Check 48: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 48: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 48: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 49: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-context-building-and-prompting] Check 49: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 49: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 49: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-context-building-and-prompting] Rule 50: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-context-building-and-prompting] Check 50: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-context-building-and-prompting] Ops 50: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-context-building-and-prompting] Learn 50: tong ket bai hoc de team dung lai cho cac case tuong tu.

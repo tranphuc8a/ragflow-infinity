@@ -1,0 +1,221 @@
+﻿# 03 - Embedding trực quan và similarity metric
+
+## 1. Embedding là gì
+
+Embedding ánh xạ văn bản thành vector để đo mức gần ngữ nghĩa.
+
+## 2. Similarity metric
+
+- Cosine similarity: phổ biến nhất cho semantic retrieval.
+- Dot product: dùng tốt khi vector đã được normalize/phù hợp kiến trúc model.
+- Euclidean distance: ít phổ biến hơn trong retrieval text.
+
+## 3. Liên hệ RAGFlow
+
+- `embedding(...)` trong `rag/svr/task_executor.py`.
+- Vector lưu ở field `q_<dim>_vec`.
+- Có thể phối hợp vector tiêu đề và nội dung qua `filename_embd_weight`.
+
+## 4. Lỗi thường gặp
+
+- Dùng embedding model không phù hợp domain.
+- Trộn dữ liệu đa ngôn ngữ/đa style mà không kiểm chứng chất lượng retrieval.
+
+## Phan tich chuyen sau bo sung
+
+- [03-embedding-intuition] Rule 1: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-embedding-intuition] Check 1: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 1: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 1: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 2: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-embedding-intuition] Check 2: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 2: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 2: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 3: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-embedding-intuition] Check 3: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 3: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 3: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 4: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-embedding-intuition] Check 4: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 4: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 4: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 5: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-embedding-intuition] Check 5: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 5: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 5: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 6: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-embedding-intuition] Check 6: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 6: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 6: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 7: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-embedding-intuition] Check 7: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 7: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 7: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 8: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-embedding-intuition] Check 8: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 8: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 8: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 9: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-embedding-intuition] Check 9: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 9: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 9: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 10: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-embedding-intuition] Check 10: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 10: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 10: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 11: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-embedding-intuition] Check 11: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 11: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 11: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 12: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-embedding-intuition] Check 12: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 12: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 12: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 13: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-embedding-intuition] Check 13: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 13: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 13: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 14: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-embedding-intuition] Check 14: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 14: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 14: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 15: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-embedding-intuition] Check 15: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 15: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 15: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 16: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-embedding-intuition] Check 16: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 16: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 16: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 17: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-embedding-intuition] Check 17: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 17: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 17: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 18: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-embedding-intuition] Check 18: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 18: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 18: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 19: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-embedding-intuition] Check 19: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 19: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 19: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 20: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-embedding-intuition] Check 20: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 20: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 20: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 21: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-embedding-intuition] Check 21: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 21: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 21: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 22: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-embedding-intuition] Check 22: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 22: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 22: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 23: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-embedding-intuition] Check 23: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 23: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 23: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 24: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-embedding-intuition] Check 24: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 24: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 24: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 25: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-embedding-intuition] Check 25: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 25: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 25: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 26: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-embedding-intuition] Check 26: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 26: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 26: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 27: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-embedding-intuition] Check 27: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 27: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 27: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 28: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-embedding-intuition] Check 28: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 28: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 28: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 29: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-embedding-intuition] Check 29: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 29: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 29: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 30: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-embedding-intuition] Check 30: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 30: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 30: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 31: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-embedding-intuition] Check 31: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 31: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 31: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 32: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-embedding-intuition] Check 32: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 32: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 32: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 33: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-embedding-intuition] Check 33: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 33: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 33: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 34: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-embedding-intuition] Check 34: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 34: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 34: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 35: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-embedding-intuition] Check 35: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 35: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 35: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 36: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-embedding-intuition] Check 36: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 36: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 36: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 37: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-embedding-intuition] Check 37: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 37: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 37: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 38: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-embedding-intuition] Check 38: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 38: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 38: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 39: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-embedding-intuition] Check 39: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 39: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 39: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 40: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [03-embedding-intuition] Check 40: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 40: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 40: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 41: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [03-embedding-intuition] Check 41: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 41: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 41: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 42: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [03-embedding-intuition] Check 42: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 42: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 42: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 43: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [03-embedding-intuition] Check 43: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 43: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 43: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 44: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [03-embedding-intuition] Check 44: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 44: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 44: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 45: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [03-embedding-intuition] Check 45: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 45: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 45: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 46: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [03-embedding-intuition] Check 46: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 46: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 46: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 47: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [03-embedding-intuition] Check 47: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 47: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 47: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 48: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [03-embedding-intuition] Check 48: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 48: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 48: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [03-embedding-intuition] Rule 49: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [03-embedding-intuition] Check 49: ghi ro input, output, metric, baseline, va rollback rule.
+- [03-embedding-intuition] Ops 49: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [03-embedding-intuition] Learn 49: tong ket bai hoc de team dung lai cho cac case tuong tu.

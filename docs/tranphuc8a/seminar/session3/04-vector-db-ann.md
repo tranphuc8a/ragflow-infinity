@@ -1,0 +1,220 @@
+﻿# 04 - Vector Database và ANN Search
+
+## 1. ANN là gì
+
+ANN (Approximate Nearest Neighbor) tìm hàng xóm gần đúng nhanh hơn tìm chính xác tuyệt đối.
+
+## 2. Một số cấu trúc index
+
+- HNSW: truy vấn nhanh, dùng nhiều RAM hơn.
+- IVF: chia cụm trước khi tìm, cần tune tham số.
+- PQ: giảm bộ nhớ, đánh đổi độ chính xác.
+
+## 3. Trade-off latency vs recall
+
+- Tăng candidate/top-k: recall tăng, latency và chi phí tăng.
+- Rerank mạnh: precision tăng, tốn compute thêm.
+
+## 4. Nguyên tắc production
+
+- Chọn cấu hình dựa trên SLA và KPI chất lượng.
+- Luôn benchmark bằng workload thực tế, không chỉ benchmark tổng quát.
+
+## Phan tich chuyen sau bo sung
+
+- [04-vector-db-ann] Rule 1: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [04-vector-db-ann] Check 1: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 1: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 1: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 2: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [04-vector-db-ann] Check 2: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 2: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 2: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 3: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [04-vector-db-ann] Check 3: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 3: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 3: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 4: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [04-vector-db-ann] Check 4: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 4: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 4: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 5: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [04-vector-db-ann] Check 5: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 5: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 5: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 6: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [04-vector-db-ann] Check 6: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 6: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 6: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 7: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [04-vector-db-ann] Check 7: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 7: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 7: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 8: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [04-vector-db-ann] Check 8: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 8: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 8: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 9: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [04-vector-db-ann] Check 9: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 9: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 9: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 10: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [04-vector-db-ann] Check 10: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 10: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 10: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 11: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [04-vector-db-ann] Check 11: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 11: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 11: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 12: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [04-vector-db-ann] Check 12: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 12: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 12: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 13: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [04-vector-db-ann] Check 13: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 13: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 13: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 14: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [04-vector-db-ann] Check 14: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 14: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 14: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 15: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [04-vector-db-ann] Check 15: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 15: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 15: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 16: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [04-vector-db-ann] Check 16: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 16: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 16: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 17: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [04-vector-db-ann] Check 17: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 17: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 17: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 18: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [04-vector-db-ann] Check 18: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 18: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 18: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 19: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [04-vector-db-ann] Check 19: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 19: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 19: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 20: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [04-vector-db-ann] Check 20: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 20: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 20: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 21: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [04-vector-db-ann] Check 21: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 21: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 21: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 22: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [04-vector-db-ann] Check 22: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 22: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 22: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 23: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [04-vector-db-ann] Check 23: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 23: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 23: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 24: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [04-vector-db-ann] Check 24: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 24: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 24: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 25: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [04-vector-db-ann] Check 25: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 25: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 25: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 26: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [04-vector-db-ann] Check 26: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 26: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 26: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 27: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [04-vector-db-ann] Check 27: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 27: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 27: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 28: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [04-vector-db-ann] Check 28: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 28: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 28: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 29: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [04-vector-db-ann] Check 29: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 29: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 29: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 30: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [04-vector-db-ann] Check 30: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 30: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 30: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 31: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [04-vector-db-ann] Check 31: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 31: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 31: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 32: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [04-vector-db-ann] Check 32: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 32: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 32: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 33: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [04-vector-db-ann] Check 33: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 33: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 33: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 34: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [04-vector-db-ann] Check 34: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 34: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 34: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 35: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [04-vector-db-ann] Check 35: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 35: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 35: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 36: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [04-vector-db-ann] Check 36: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 36: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 36: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 37: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [04-vector-db-ann] Check 37: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 37: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 37: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 38: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [04-vector-db-ann] Check 38: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 38: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 38: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 39: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [04-vector-db-ann] Check 39: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 39: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 39: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 40: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [04-vector-db-ann] Check 40: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 40: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 40: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 41: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [04-vector-db-ann] Check 41: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 41: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 41: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 42: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [04-vector-db-ann] Check 42: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 42: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 42: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 43: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [04-vector-db-ann] Check 43: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 43: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 43: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 44: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [04-vector-db-ann] Check 44: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 44: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 44: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 45: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [04-vector-db-ann] Check 45: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 45: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 45: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 46: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [04-vector-db-ann] Check 46: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 46: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 46: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 47: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [04-vector-db-ann] Check 47: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 47: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 47: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 48: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [04-vector-db-ann] Check 48: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 48: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 48: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [04-vector-db-ann] Rule 49: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [04-vector-db-ann] Check 49: ghi ro input, output, metric, baseline, va rollback rule.
+- [04-vector-db-ann] Ops 49: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [04-vector-db-ann] Learn 49: tong ket bai hoc de team dung lai cho cac case tuong tu.

@@ -1,0 +1,222 @@
+﻿# 02 - Retrieval Strategy Deep Dive
+
+## 1. Top-k retrieval
+
+- Top-k là số lượng candidate ban đầu để tránh bỏ sót.
+- Quá thấp: miss thông tin.
+- Quá cao: tăng nhiễu và chi phí rerank/prompt.
+
+## 2. Hybrid search
+
+- Kết hợp vector similarity và term similarity.
+- Phù hợp câu hỏi vừa semantic vừa chứa từ khóa chính xác.
+
+## 3. Reranking
+
+- Rerank model chấm lại candidate để ưu tiên chunk phù hợp hơn ở top-N.
+- Tăng precision ở context cuối cùng.
+
+## 4. Tùy chọn nâng cao trong RAGFlow
+
+- TOC enhance.
+- Retrieval by children.
+- Bổ sung nguồn ngoài (ví dụ Tavily) theo cấu hình.
+
+## Phan tich chuyen sau bo sung
+
+- [02-retrieval-strategy-deepdive] Rule 1: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [02-retrieval-strategy-deepdive] Check 1: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 1: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 1: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 2: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [02-retrieval-strategy-deepdive] Check 2: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 2: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 2: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 3: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [02-retrieval-strategy-deepdive] Check 3: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 3: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 3: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 4: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [02-retrieval-strategy-deepdive] Check 4: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 4: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 4: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 5: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [02-retrieval-strategy-deepdive] Check 5: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 5: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 5: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 6: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [02-retrieval-strategy-deepdive] Check 6: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 6: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 6: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 7: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [02-retrieval-strategy-deepdive] Check 7: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 7: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 7: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 8: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [02-retrieval-strategy-deepdive] Check 8: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 8: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 8: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 9: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [02-retrieval-strategy-deepdive] Check 9: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 9: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 9: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 10: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [02-retrieval-strategy-deepdive] Check 10: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 10: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 10: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 11: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [02-retrieval-strategy-deepdive] Check 11: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 11: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 11: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 12: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [02-retrieval-strategy-deepdive] Check 12: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 12: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 12: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 13: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [02-retrieval-strategy-deepdive] Check 13: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 13: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 13: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 14: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [02-retrieval-strategy-deepdive] Check 14: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 14: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 14: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 15: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [02-retrieval-strategy-deepdive] Check 15: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 15: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 15: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 16: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [02-retrieval-strategy-deepdive] Check 16: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 16: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 16: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 17: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [02-retrieval-strategy-deepdive] Check 17: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 17: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 17: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 18: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [02-retrieval-strategy-deepdive] Check 18: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 18: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 18: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 19: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [02-retrieval-strategy-deepdive] Check 19: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 19: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 19: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 20: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [02-retrieval-strategy-deepdive] Check 20: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 20: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 20: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 21: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [02-retrieval-strategy-deepdive] Check 21: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 21: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 21: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 22: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [02-retrieval-strategy-deepdive] Check 22: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 22: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 22: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 23: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [02-retrieval-strategy-deepdive] Check 23: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 23: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 23: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 24: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [02-retrieval-strategy-deepdive] Check 24: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 24: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 24: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 25: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [02-retrieval-strategy-deepdive] Check 25: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 25: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 25: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 26: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [02-retrieval-strategy-deepdive] Check 26: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 26: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 26: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 27: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [02-retrieval-strategy-deepdive] Check 27: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 27: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 27: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 28: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [02-retrieval-strategy-deepdive] Check 28: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 28: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 28: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 29: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [02-retrieval-strategy-deepdive] Check 29: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 29: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 29: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 30: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [02-retrieval-strategy-deepdive] Check 30: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 30: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 30: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 31: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [02-retrieval-strategy-deepdive] Check 31: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 31: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 31: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 32: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [02-retrieval-strategy-deepdive] Check 32: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 32: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 32: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 33: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [02-retrieval-strategy-deepdive] Check 33: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 33: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 33: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 34: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [02-retrieval-strategy-deepdive] Check 34: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 34: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 34: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 35: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [02-retrieval-strategy-deepdive] Check 35: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 35: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 35: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 36: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [02-retrieval-strategy-deepdive] Check 36: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 36: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 36: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 37: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [02-retrieval-strategy-deepdive] Check 37: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 37: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 37: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 38: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [02-retrieval-strategy-deepdive] Check 38: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 38: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 38: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 39: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [02-retrieval-strategy-deepdive] Check 39: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 39: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 39: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 40: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [02-retrieval-strategy-deepdive] Check 40: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 40: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 40: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 41: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [02-retrieval-strategy-deepdive] Check 41: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 41: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 41: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 42: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [02-retrieval-strategy-deepdive] Check 42: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 42: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 42: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 43: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [02-retrieval-strategy-deepdive] Check 43: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 43: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 43: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 44: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [02-retrieval-strategy-deepdive] Check 44: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 44: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 44: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 45: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [02-retrieval-strategy-deepdive] Check 45: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 45: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 45: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 46: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [02-retrieval-strategy-deepdive] Check 46: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 46: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 46: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 47: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [02-retrieval-strategy-deepdive] Check 47: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 47: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 47: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 48: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [02-retrieval-strategy-deepdive] Check 48: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 48: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 48: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [02-retrieval-strategy-deepdive] Rule 49: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [02-retrieval-strategy-deepdive] Check 49: ghi ro input, output, metric, baseline, va rollback rule.
+- [02-retrieval-strategy-deepdive] Ops 49: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [02-retrieval-strategy-deepdive] Learn 49: tong ket bai hoc de team dung lai cho cac case tuong tu.

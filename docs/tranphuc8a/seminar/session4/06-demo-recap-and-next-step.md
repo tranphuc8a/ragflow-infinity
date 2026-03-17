@@ -1,0 +1,223 @@
+﻿# 06 - Demo, Recap và hướng đi tiếp
+
+## 1. Demo suggestion (60 phút)
+
+- Chạy ba nhóm câu hỏi: factual, semantic paraphrase, multi-turn.
+- So sánh vector-only, hybrid, hybrid+rerank.
+- Quan sát chất lượng answer, citation, độ ổn định kết quả.
+
+## 2. Tổng kết 4 buổi
+
+- Session 1: vì sao cần RAG.
+- Session 2: ingest và parser là chất lượng đầu vào.
+- Session 3: chunking/embedding/index là lõi retrieval.
+- Session 4: query/prompt/citation là lõi trả lời.
+
+## 3. Next steps cho người học
+
+- Bắt đầu benchmark nhỏ trên dữ liệu thực tế.
+- Thiết lập KPI retrieval + answer quality.
+- Chọn một điểm nghẽn cụ thể để tối ưu theo vòng lặp đo-lường-cải tiến.
+
+## Phan tich chuyen sau bo sung
+
+- [06-demo-recap-and-next-step] Rule 1: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [06-demo-recap-and-next-step] Check 1: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 1: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 1: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 2: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [06-demo-recap-and-next-step] Check 2: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 2: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 2: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 3: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [06-demo-recap-and-next-step] Check 3: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 3: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 3: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 4: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [06-demo-recap-and-next-step] Check 4: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 4: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 4: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 5: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [06-demo-recap-and-next-step] Check 5: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 5: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 5: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 6: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [06-demo-recap-and-next-step] Check 6: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 6: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 6: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 7: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [06-demo-recap-and-next-step] Check 7: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 7: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 7: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 8: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [06-demo-recap-and-next-step] Check 8: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 8: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 8: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 9: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [06-demo-recap-and-next-step] Check 9: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 9: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 9: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 10: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [06-demo-recap-and-next-step] Check 10: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 10: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 10: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 11: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [06-demo-recap-and-next-step] Check 11: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 11: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 11: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 12: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [06-demo-recap-and-next-step] Check 12: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 12: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 12: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 13: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [06-demo-recap-and-next-step] Check 13: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 13: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 13: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 14: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [06-demo-recap-and-next-step] Check 14: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 14: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 14: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 15: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [06-demo-recap-and-next-step] Check 15: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 15: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 15: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 16: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [06-demo-recap-and-next-step] Check 16: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 16: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 16: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 17: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [06-demo-recap-and-next-step] Check 17: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 17: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 17: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 18: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [06-demo-recap-and-next-step] Check 18: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 18: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 18: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 19: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [06-demo-recap-and-next-step] Check 19: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 19: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 19: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 20: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [06-demo-recap-and-next-step] Check 20: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 20: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 20: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 21: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [06-demo-recap-and-next-step] Check 21: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 21: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 21: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 22: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [06-demo-recap-and-next-step] Check 22: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 22: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 22: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 23: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [06-demo-recap-and-next-step] Check 23: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 23: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 23: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 24: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [06-demo-recap-and-next-step] Check 24: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 24: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 24: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 25: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [06-demo-recap-and-next-step] Check 25: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 25: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 25: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 26: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [06-demo-recap-and-next-step] Check 26: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 26: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 26: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 27: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [06-demo-recap-and-next-step] Check 27: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 27: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 27: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 28: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [06-demo-recap-and-next-step] Check 28: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 28: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 28: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 29: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [06-demo-recap-and-next-step] Check 29: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 29: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 29: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 30: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [06-demo-recap-and-next-step] Check 30: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 30: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 30: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 31: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [06-demo-recap-and-next-step] Check 31: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 31: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 31: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 32: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [06-demo-recap-and-next-step] Check 32: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 32: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 32: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 33: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [06-demo-recap-and-next-step] Check 33: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 33: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 33: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 34: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [06-demo-recap-and-next-step] Check 34: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 34: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 34: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 35: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [06-demo-recap-and-next-step] Check 35: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 35: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 35: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 36: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [06-demo-recap-and-next-step] Check 36: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 36: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 36: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 37: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [06-demo-recap-and-next-step] Check 37: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 37: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 37: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 38: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [06-demo-recap-and-next-step] Check 38: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 38: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 38: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 39: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [06-demo-recap-and-next-step] Check 39: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 39: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 39: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 40: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [06-demo-recap-and-next-step] Check 40: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 40: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 40: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 41: Phan tich sau: xac dinh ro value cua thanh phan nay trong toan bo he thong RAG.
+- [06-demo-recap-and-next-step] Check 41: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 41: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 41: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 42: Phan tich sau: lien ket thanh phan nay voi chat luong grounded answer va citation.
+- [06-demo-recap-and-next-step] Check 42: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 42: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 42: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 43: Phan tich sau: xac dinh metric nao thay doi truoc khi ket luan toi uu thanh cong.
+- [06-demo-recap-and-next-step] Check 43: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 43: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 43: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 44: Phan tich sau: danh gia trade-off giua do tre, chi phi, va do chinh xac retrieval.
+- [06-demo-recap-and-next-step] Check 44: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 44: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 44: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 45: Phan tich sau: lap baseline va rollback rule truoc khi thay doi trong production.
+- [06-demo-recap-and-next-step] Check 45: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 45: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 45: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 46: Phan tich sau: tim failure mode, cach phat hien som, va cach khoanh vung nguyen nhan.
+- [06-demo-recap-and-next-step] Check 46: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 46: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 46: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 47: Phan tich sau: toi uu upstream neu muon giam noise cho downstream generation.
+- [06-demo-recap-and-next-step] Check 47: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 47: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 47: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 48: Phan tich sau: doi chieu ket qua ky thuat voi muc tieu business va SLA.
+- [06-demo-recap-and-next-step] Check 48: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 48: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 48: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 49: Phan tich sau: bo sung checklist test de dam bao ket qua co the tai lap.
+- [06-demo-recap-and-next-step] Check 49: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 49: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 49: tong ket bai hoc de team dung lai cho cac case tuong tu.
+- [06-demo-recap-and-next-step] Rule 50: Phan tich sau: lap vong lap do luong -> cai tien -> kiem chung -> chuan hoa.
+- [06-demo-recap-and-next-step] Check 50: ghi ro input, output, metric, baseline, va rollback rule.
+- [06-demo-recap-and-next-step] Ops 50: moi thay doi can guardrail, alert, va runbook xu ly su co.
+- [06-demo-recap-and-next-step] Learn 50: tong ket bai hoc de team dung lai cho cac case tuong tu.
