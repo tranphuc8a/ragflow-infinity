@@ -33,6 +33,7 @@ from common.constants import LLMType
 from common.misc_utils import get_uuid
 from deepdoc.parser import ExcelParser
 from deepdoc.parser.docling_parser import DoclingParser
+from deepdoc.parser.doxa_parser import DoxaParser
 from deepdoc.parser.pdf_parser import PlainParser, RAGFlowPdfParser, VisionParser
 from deepdoc.parser.tcadp_parser import TCADPParser
 from rag.app.naive import Docx
@@ -174,7 +175,7 @@ class ParserParam(ProcessParamBase):
             pdf_parse_method = pdf_config.get("parse_method", "")
             self.check_empty(pdf_parse_method, "Parse method abnormal.")
 
-            if pdf_parse_method.lower() not in ["deepdoc", "plain_text", "mineru", "docling", "tcadp parser", "paddleocr"]:
+            if pdf_parse_method.lower() not in ["deepdoc", "plain_text", "mineru", "docling", "tcadp parser", "paddleocr", "doxa"]:
                 self.check_empty(pdf_config.get("lang", ""), "PDF VLM language")
 
             pdf_output_format = pdf_config.get("output_format", "")
@@ -479,6 +480,33 @@ class Parser(ProcessBase):
                     "positions": positions,
                 }
                 bboxes.append(box)
+        elif parse_method.lower() == "doxa":
+            doxa_parser = DoxaParser(
+                token=conf.get("doxa_token"),
+                doxa_url=conf.get("doxa_url"),
+                ipaas_token=conf.get("doxa_ipaas_token"),
+            )
+            ok, err = doxa_parser.check_installation()
+            if not ok:
+                raise RuntimeError(err)
+
+            lines, _ = doxa_parser.parse_pdf(
+                filepath=name,
+                binary=blob,
+                callback=self.callback,
+                parse_method=conf.get("doxa_parse_method", "default"),
+                lang=conf.get("lang", "Chinese"),
+                doxa_options=conf.get("doxa_options", {}),
+            )
+
+            bboxes = []
+            for item in lines:
+                if isinstance(item, tuple) and item:
+                    text = item[0]
+                else:
+                    text = item
+                if isinstance(text, str) and text.strip():
+                    bboxes.append({"text": text})
         else:
             if conf.get("parse_method"):
                 vision_model_config = get_model_config_by_type_and_name(self._canvas._tenant_id, LLMType.IMAGE2TEXT, conf["parse_method"])
