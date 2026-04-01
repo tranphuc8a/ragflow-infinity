@@ -2339,6 +2339,7 @@ Important structured information may include: names, dates, locations, events, k
       },
       imageParseMethodOptions: {
         ocr: 'OCR',
+        doxa: 'DoXA',
       },
       structuredOutput: {
         configuration: 'Configuration',

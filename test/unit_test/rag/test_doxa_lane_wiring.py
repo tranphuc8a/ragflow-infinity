@@ -60,5 +60,14 @@ def test_lane_b_parse_method_validation_includes_doxa():
 def test_lane_b_pdf_branch_has_doxa_parser_path():
     source = _read("rag/flow/parser/parser.py")
     assert 'elif parse_method.lower() == "doxa":' in source
-    assert 'doxa_parser = DoxaParser(' in source
+    assert 'def _parse_with_doxa(self, name, blob, conf):' in source
     assert 'parse_method=conf.get("doxa_parse_method", "default")' in source
+
+
+def test_lane_b_non_pdf_branches_include_doxa():
+    source = _read("rag/flow/parser/parser.py")
+    assert 'def _spreadsheet(self, name, blob, **kwargs):' in source
+    assert 'def _slides(self, name, blob, **kwargs):' in source
+    assert 'def _image(self, name, blob, **kwargs):' in source
+    assert 'if parse_method.lower() == "doxa":' in source
+    assert 'elif parse_method == "doxa":' in source

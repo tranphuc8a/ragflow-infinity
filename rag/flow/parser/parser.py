@@ -199,7 +199,7 @@ class ParserParam(ProcessParamBase):
         image_config = self.setups.get("image", "")
         if image_config:
             image_parse_method = image_config.get("parse_method", "")
-            if image_parse_method not in ["ocr"]:
+            if image_parse_method.lower() not in ["ocr", "doxa"]:
                 self.check_empty(image_config.get("lang", ""), "Image VLM language")
 
         text_config = self.setups.get("text&markdown", "")
@@ -226,6 +226,37 @@ class ParserParam(ProcessParamBase):
 
 class Parser(ProcessBase):
     component_name = "Parser"
+
+    @staticmethod
+    def _extract_doxa_texts(lines):
+        texts = []
+        for item in lines or []:
+            text = item[0] if isinstance(item, tuple) and item else item
+            if isinstance(text, str):
+                text = text.strip()
+                if text:
+                    texts.append(text)
+        return texts
+
+    def _parse_with_doxa(self, name, blob, conf):
+        doxa_parser = DoxaParser(
+            token=conf.get("doxa_token"),
+            doxa_url=conf.get("doxa_url"),
+            ipaas_token=conf.get("doxa_ipaas_token"),
+        )
+        ok, err = doxa_parser.check_installation()
+        if not ok:
+            raise RuntimeError(err)
+
+        lines, _ = doxa_parser.parse_pdf(
+            filepath=name,
+            binary=blob,
+            callback=self.callback,
+            parse_method=conf.get("doxa_parse_method", "default"),
+            lang=conf.get("lang", "Chinese"),
+            doxa_options=conf.get("doxa_options", {}),
+        )
+        return self._extract_doxa_texts(lines)
 
     @staticmethod
     def _extract_word_title_lines(doc, to_page=100000):
@@ -481,32 +512,10 @@ class Parser(ProcessBase):
                 }
                 bboxes.append(box)
         elif parse_method.lower() == "doxa":
-            doxa_parser = DoxaParser(
-                token=conf.get("doxa_token"),
-                doxa_url=conf.get("doxa_url"),
-                ipaas_token=conf.get("doxa_ipaas_token"),
-            )
-            ok, err = doxa_parser.check_installation()
-            if not ok:
-                raise RuntimeError(err)
-
-            lines, _ = doxa_parser.parse_pdf(
-                filepath=name,
-                binary=blob,
-                callback=self.callback,
-                parse_method=conf.get("doxa_parse_method", "default"),
-                lang=conf.get("lang", "Chinese"),
-                doxa_options=conf.get("doxa_options", {}),
-            )
-
+            texts = self._parse_with_doxa(name, blob, conf)
             bboxes = []
-            for item in lines:
-                if isinstance(item, tuple) and item:
-                    text = item[0]
-                else:
-                    text = item
-                if isinstance(text, str) and text.strip():
-                    bboxes.append({"text": text})
+            for text in texts:
+                bboxes.append({"text": text})
         else:
             if conf.get("parse_method"):
                 vision_model_config = get_model_config_by_type_and_name(self._canvas._tenant_id, LLMType.IMAGE2TEXT, conf["parse_method"])
@@ -621,8 +630,19 @@ class Parser(ProcessBase):
 
         parse_method = conf.get("parse_method", "deepdoc")
 
+        if parse_method.lower() == "doxa":
+            texts = self._parse_with_doxa(name, blob, conf)
+            output_format = conf.get("output_format", "html")
+
+            if output_format == "html":
+                self.set_output("html", "<br/>".join(texts))
+            elif output_format == "json":
+                self.set_output("json", [{"text": txt} for txt in texts])
+            elif output_format == "markdown":
+                self.set_output("markdown", "\n\n".join(texts))
+
         # Handle TCADP parser
-        if parse_method.lower() == "tcadp parser":
+        elif parse_method.lower() == "tcadp parser":
             table_result_type = conf.get("table_result_type", "1")
             markdown_image_response_type = conf.get("markdown_image_response_type", "1")
             tcadp_parser = TCADPParser(
@@ -735,8 +755,12 @@ class Parser(ProcessBase):
 
         parse_method = conf.get("parse_method", "deepdoc")
 
+        if parse_method.lower() == "doxa":
+            texts = self._parse_with_doxa(name, blob, conf)
+            self.set_output("json", [{"text": txt} for txt in texts])
+
         # Handle TCADP parser
-        if parse_method.lower() == "tcadp parser":
+        elif parse_method.lower() == "tcadp parser":
             table_result_type = conf.get("table_result_type", "1")
             markdown_image_response_type = conf.get("markdown_image_response_type", "1")
             tcadp_parser = TCADPParser(
@@ -847,11 +871,16 @@ class Parser(ProcessBase):
 
         img = Image.open(io.BytesIO(blob)).convert("RGB")
 
-        if conf["parse_method"] == "ocr":
+        parse_method = (conf.get("parse_method") or "ocr").lower()
+
+        if parse_method == "ocr":
             # use ocr, recognize chars only
             ocr = OCR()
             bxs = ocr(np.array(img))  # return boxes and recognize result
             txt = "\n".join([t[0] for _, t in bxs if t[0]])
+        elif parse_method == "doxa":
+            texts = self._parse_with_doxa(name, blob, conf)
+            txt = "\n".join(texts)
         else:
             lang = conf["lang"]
             # use VLM to describe the picture

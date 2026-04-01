@@ -41,9 +41,11 @@ export const useFetchKnowledgeConfigurationOnMount = (
     useFetchKnowledgeBaseConfiguration();
 
   useEffect(() => {
+    const parserConfigExt = knowledgeDetails.parser_config?.ext || {};
     const parser_config = {
       ...form.formState?.defaultValues?.parser_config,
       ...knowledgeDetails.parser_config,
+      ...parserConfigExt,
       raptor: {
         ...form.formState?.defaultValues?.parser_config?.raptor,
         ...knowledgeDetails.parser_config?.raptor,
