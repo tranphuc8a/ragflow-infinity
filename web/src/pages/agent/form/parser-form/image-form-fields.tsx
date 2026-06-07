@@ -29,8 +29,7 @@ export function ImageFormFields({ prefix }: CommonProps) {
   const languageShown = useMemo(() => {
     return (
       !isEmpty(parseMethod) &&
-      parseMethod !== ImageParseMethod.OCR &&
-      parseMethod !== ParseDocumentType.DoXA
+      parseMethod !== ImageParseMethod.OCR
     );
   }, [parseMethod]);
 

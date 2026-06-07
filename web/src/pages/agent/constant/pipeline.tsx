@@ -97,7 +97,6 @@ export enum TokenizerSearchMethod {
 
 export enum ImageParseMethod {
   OCR = 'ocr',
-  DoXA = ParseDocumentType.DoXA,
 }
 
 export enum TokenizerFields {

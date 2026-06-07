@@ -32,14 +32,13 @@ export function SpreadsheetFormFields({ prefix }: CommonProps) {
     name: parseMethodName,
   });
 
-  // Spreadsheet supports DeepDOC, TCADPParser and DoXA.
+  // Spreadsheet supports DeepDOC and TCADPParser.
   const optionsWithoutLLM = [
     { label: ParseDocumentType.DeepDOC, value: ParseDocumentType.DeepDOC },
     {
       label: ParseDocumentType.TCADPParser,
       value: ParseDocumentType.TCADPParser,
     },
-    { label: ParseDocumentType.DoXA, value: ParseDocumentType.DoXA },
   ];
 
   const tcadpOptionsShown = useMemo(() => {

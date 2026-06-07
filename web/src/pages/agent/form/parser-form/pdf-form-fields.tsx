@@ -24,10 +24,6 @@ const markdownImageResponseTypeOptions: SelectWithSearchFlagOptionType[] = [
   { label: 'Text', value: '1' },
 ];
 
-const doxaParseMethodOptions: SelectWithSearchFlagOptionType[] = [
-  { label: 'Default', value: 'default' },
-];
-
 export function PdfFormFields({ prefix }: CommonProps) {
   const { t } = useTranslation();
   const form = useFormContext();
@@ -51,10 +47,6 @@ export function PdfFormFields({ prefix }: CommonProps) {
     return (
       !isEmpty(parseMethod) && parseMethod === ParseDocumentType.TCADPParser
     );
-  }, [parseMethod]);
-
-  const doxaOptionsShown = useMemo(() => {
-    return !isEmpty(parseMethod) && parseMethod === ParseDocumentType.DoXA;
   }, [parseMethod]);
 
   useSetInitialLanguage({ prefix, languageShown });
@@ -126,74 +118,6 @@ export function PdfFormFields({ prefix }: CommonProps) {
                 onChange={field.onChange}
                 options={markdownImageResponseTypeOptions}
               ></SelectWithSearch>
-            )}
-          </RAGFlowFormItem>
-        </>
-      )}
-
-      {doxaOptionsShown && (
-        <>
-          <RAGFlowFormItem
-            name={buildFieldNameWithPrefix('doxa_parse_method', prefix)}
-            label={t('knowledgeConfiguration.doxaParseMethod', 'Parse method')}
-            tooltip={t(
-              'knowledgeConfiguration.doxaParseMethodTip',
-              'Parsing mode for DoXA parser.',
-            )}
-          >
-            {(field) => (
-              <SelectWithSearch
-                value={field.value || 'default'}
-                onChange={field.onChange}
-                options={doxaParseMethodOptions}
-              ></SelectWithSearch>
-            )}
-          </RAGFlowFormItem>
-
-          <RAGFlowFormItem
-            name={buildFieldNameWithPrefix('doxa_url', prefix)}
-            label={t('knowledgeConfiguration.doxaApiBase', 'DoXA API base URL')}
-          >
-            {(field) => (
-              <Input
-                {...field}
-                placeholder={t(
-                  'knowledgeConfiguration.doxaApiBasePlaceholder',
-                  'e.g. https://api.doxa.example.com',
-                )}
-              />
-            )}
-          </RAGFlowFormItem>
-
-          <RAGFlowFormItem
-            name={buildFieldNameWithPrefix('doxa_token', prefix)}
-            label={t('knowledgeConfiguration.doxaApiToken', 'DoXA API token')}
-          >
-            {(field) => (
-              <Input
-                {...field}
-                type="password"
-                placeholder={t(
-                  'knowledgeConfiguration.doxaApiTokenPlaceholder',
-                  'Input DoXA token (optional if env configured)',
-                )}
-              />
-            )}
-          </RAGFlowFormItem>
-
-          <RAGFlowFormItem
-            name={buildFieldNameWithPrefix('doxa_ipaas_token', prefix)}
-            label={t('knowledgeConfiguration.doxaIpaasToken', 'DoXA iPaaS token')}
-          >
-            {(field) => (
-              <Input
-                {...field}
-                type="password"
-                placeholder={t(
-                  'knowledgeConfiguration.doxaIpaasTokenPlaceholder',
-                  'Input iPaaS token (optional)',
-                )}
-              />
             )}
           </RAGFlowFormItem>
         </>
