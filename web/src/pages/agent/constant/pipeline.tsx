@@ -262,6 +262,20 @@ export const initialExtractorValues = {
   },
 };
 
+export const initialDoxaParserValues = {
+  file_path: '',
+  doxa_token: '',
+  doxa_url: '',
+  doxa_ipaas_token: '',
+  parse_method: 'default',
+  language: 'Chinese',
+  outputs: {
+    text_sections: { type: 'Array<String>', value: [] },
+    sections_count: { type: 'Number', value: 0 },
+    status: { type: 'String', value: '' },
+  },
+};
+
 export const NoDebugOperatorsList = [Operator.Begin];
 
 export const FileTypeSuffixMap = {
