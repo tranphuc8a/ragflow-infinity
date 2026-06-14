@@ -143,6 +143,11 @@ export const FormSchema = z.object({
       system_prompt: z.string().optional(),
       table_result_type: z.string().optional(),
       markdown_image_response_type: z.string().optional(),
+      doxa_url: z.string().optional(),
+      doxa_token: z.string().optional(),
+      doxa_ipaas_token: z.string().optional(),
+      doxa_parse_method: z.string().optional(),
+      doxa_options: z.record(z.string(), z.any()).optional(),
     }),
   ),
 });

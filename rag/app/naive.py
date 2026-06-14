@@ -35,6 +35,7 @@ from api.db.joint_services.tenant_model_service import get_model_config_by_type_
 from rag.utils.file_utils import extract_embed_file, extract_links_from_pdf, extract_links_from_docx, extract_html
 from deepdoc.parser import DocxParser, ExcelParser, HtmlParser, JsonParser, MarkdownElementExtractor, MarkdownParser, PdfParser, TxtParser
 from deepdoc.parser.figure_parser import VisionFigureParser, vision_figure_parser_docx_wrapper_naive, vision_figure_parser_pdf_wrapper
+from deepdoc.parser.doxa_parser import DoxaParser
 from deepdoc.parser.pdf_parser import PlainParser, VisionParser
 from deepdoc.parser.docling_parser import DoclingParser
 from deepdoc.parser.tcadp_parser import TCADPParser
@@ -231,6 +232,41 @@ def by_paddleocr(
     return None, None, None
 
 
+def by_doxa(
+    filename,
+    binary=None,
+    from_page=0,
+    to_page=100000,
+    lang="Chinese",
+    callback=None,
+    pdf_cls=None,
+    parse_method: str = "default",
+    **kwargs,
+):
+    parser_config = kwargs.get("parser_config", {}) or {}
+    doxa_parser = DoxaParser(
+        token=parser_config.get("doxa_token"),
+        doxa_url=parser_config.get("doxa_url"),
+        ipaas_token=parser_config.get("doxa_ipaas_token"),
+    )
+
+    ok, err = doxa_parser.check_installation()
+    if not ok:
+        if callback:
+            callback(-1, err)
+        return None, None, doxa_parser
+
+    sections, tables = doxa_parser.parse_pdf(
+        filepath=filename,
+        binary=binary,
+        callback=callback,
+        parse_method=parser_config.get("doxa_parse_method", parse_method),
+        lang=lang,
+        doxa_options=parser_config.get("doxa_options", {}),
+    )
+    return sections, tables, doxa_parser
+
+
 def by_plaintext(filename, binary=None, from_page=0, to_page=100000, callback=None, **kwargs):
     layout_recognizer = (kwargs.get("layout_recognizer") or "").strip()
     if (not layout_recognizer) or (layout_recognizer == "Plain Text"):
@@ -257,6 +293,7 @@ PARSERS = {
     "docling": by_docling,
     "tcadp parser": by_tcadp,
     "paddleocr": by_paddleocr,
+    "doxa": by_doxa,
     "plaintext": by_plaintext,  # default
 }
 
@@ -849,7 +886,7 @@ def chunk(filename, binary=None, from_page=0, to_page=100000, lang="Chinese", ca
         if table_context_size or image_context_size:
             tables = append_context2table_image4pdf(sections, tables, image_context_size)
 
-        if name in ["tcadp", "docling", "mineru", "paddleocr"]:
+        if name in ["tcadp", "docling", "mineru", "paddleocr", "doxa"]:
             if int(parser_config.get("chunk_token_num", 0)) <= 0:
                 parser_config["chunk_token_num"] = 0
 

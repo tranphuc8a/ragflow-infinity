@@ -32,13 +32,14 @@ export function PptFormFields({ prefix }: CommonProps) {
     name: parseMethodName,
   });
 
-  // PPT only supports DeepDOC and TCADPParser
+  // PPT supports DeepDOC, TCADPParser and DoXA.
   const optionsWithoutLLM = [
     { label: ParseDocumentType.DeepDOC, value: ParseDocumentType.DeepDOC },
     {
       label: ParseDocumentType.TCADPParser,
       value: ParseDocumentType.TCADPParser,
     },
+    { label: ParseDocumentType.DoXA, value: ParseDocumentType.DoXA },
   ];
 
   const tcadpOptionsShown = useMemo(() => {
