@@ -6,6 +6,7 @@ import BingForm from '../form/bing-form';
 import CategorizeForm from '../form/categorize-form';
 import CodeForm from '../form/code-form';
 import CrawlerForm from '../form/crawler-form';
+import DoxaParserForm from '../form/doxa-parser-form';
 import DataOperationsForm from '../form/data-operations-form';
 import DuckDuckGoForm from '../form/duckduckgo-form';
 import EmailForm from '../form/email-form';
@@ -162,6 +163,9 @@ export const FormConfigMap = {
   },
   [Operator.Extractor]: {
     component: ExtractorForm,
+  },
+  [Operator.DoxaParser]: {
+    component: DoxaParserForm,
   },
   [Operator.DataOperations]: {
     component: DataOperationsForm,

@@ -473,6 +473,19 @@ Example: A 1 KB message with 1024-dim embedding uses ~9 KB. The 5 MB default lim
       paddleocrAlgorithmTip: 'Algorithm to use for PaddleOCR parsing',
       paddleocrSelectAlgorithm: 'Select Algorithm',
       paddleocrModelNamePlaceholder: 'e.g. paddleocr-from-env-1',
+      doxaOptions: 'DoXA options',
+      doxaParseMethod: 'Parse method',
+      doxaParseMethodTip: 'Parsing mode for DoXA parser.',
+      doxaApiBase: 'DoXA API base URL',
+      doxaApiBaseTip: 'Base URL for DoXA API service.',
+      doxaApiBasePlaceholder: 'e.g. https://api.doxa.example.com',
+      doxaApiToken: 'DoXA API token',
+      doxaApiTokenTip: 'Token used to authenticate with DoXA API.',
+      doxaApiTokenPlaceholder:
+        'Input DoXA token (optional if env configured)',
+      doxaIpaasToken: 'DoXA iPaaS token',
+      doxaIpaasTokenTip: 'Optional iPaaS token for DoXA private gateway.',
+      doxaIpaasTokenPlaceholder: 'Input iPaaS token (optional)',
       overlappedPercent: 'Overlapped percent(%)',
       generationScopeTip:
         'Determines whether RAPTOR is generated for the entire dataset or for a single file.',
@@ -2326,6 +2339,7 @@ Important structured information may include: names, dates, locations, events, k
       },
       imageParseMethodOptions: {
         ocr: 'OCR',
+        doxa: 'DoXA',
       },
       structuredOutput: {
         configuration: 'Configuration',

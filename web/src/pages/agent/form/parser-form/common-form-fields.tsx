@@ -70,6 +70,7 @@ export function ParserMethodFormField({
       horizontal={false}
       optionsWithoutLLM={optionsWithoutLLM}
       label={t('flow.parserMethod')}
+      showDefaultTooltip={false}
     ></LayoutRecognizeFormField>
   );
 }

@@ -32,7 +32,7 @@ export function PptFormFields({ prefix }: CommonProps) {
     name: parseMethodName,
   });
 
-  // PPT only supports DeepDOC and TCADPParser
+  // PPT supports DeepDOC and TCADPParser.
   const optionsWithoutLLM = [
     { label: ParseDocumentType.DeepDOC, value: ParseDocumentType.DeepDOC },
     {

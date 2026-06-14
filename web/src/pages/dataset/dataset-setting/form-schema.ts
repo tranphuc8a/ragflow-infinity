@@ -37,6 +37,11 @@ export const formSchema = z
         mineru_formula_enable: z.boolean().optional(),
         mineru_table_enable: z.boolean().optional(),
         mineru_lang: z.string().optional(),
+        doxa_url: z.string().optional(),
+        doxa_token: z.string().optional(),
+        doxa_ipaas_token: z.string().optional(),
+        doxa_parse_method: z.string().optional(),
+        doxa_options: z.record(z.string(), z.any()).optional(),
         raptor: z
           .object({
             use_raptor: z.boolean().optional(),

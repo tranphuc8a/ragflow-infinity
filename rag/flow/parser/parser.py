@@ -198,7 +198,7 @@ class ParserParam(ProcessParamBase):
         image_config = self.setups.get("image", "")
         if image_config:
             image_parse_method = image_config.get("parse_method", "")
-            if image_parse_method not in ["ocr"]:
+            if image_parse_method.lower() not in ["ocr"]:
                 self.check_empty(image_config.get("lang", ""), "Image VLM language")
 
         text_config = self.setups.get("text&markdown", "")
@@ -819,7 +819,9 @@ class Parser(ProcessBase):
 
         img = Image.open(io.BytesIO(blob)).convert("RGB")
 
-        if conf["parse_method"] == "ocr":
+        parse_method = (conf.get("parse_method") or "ocr").lower()
+
+        if parse_method == "ocr":
             # use ocr, recognize chars only
             ocr = OCR()
             bxs = ocr(np.array(img))  # return boxes and recognize result

@@ -116,6 +116,7 @@ export enum Operator {
   VariableAggregator = 'VariableAggregator',
   File = 'File', // pipeline
   Parser = 'Parser',
+  DoxaParser = 'DoxaParser',
   Tokenizer = 'Tokenizer',
   Splitter = 'Splitter',
   HierarchicalMerger = 'HierarchicalMerger',

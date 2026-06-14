@@ -87,6 +87,11 @@ export default function DatasetSettings() {
         mineru_formula_enable: true,
         mineru_table_enable: true,
         mineru_lang: 'English',
+        doxa_url: '',
+        doxa_token: '',
+        doxa_ipaas_token: '',
+        doxa_parse_method: 'default',
+        doxa_options: {},
         raptor: {
           use_raptor: true,
           max_token: 256,

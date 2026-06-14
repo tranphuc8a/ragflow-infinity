@@ -28,6 +28,7 @@ export function LayoutRecognizeFormField({
   horizontal = true,
   optionsWithoutLLM,
   label,
+  showDefaultTooltip = true,
   showMineruOptions = true,
   showPaddleocrOptions = true,
   testId,
@@ -36,6 +37,7 @@ export function LayoutRecognizeFormField({
   horizontal?: boolean;
   optionsWithoutLLM?: { value: string; label: string }[];
   label?: ReactNode;
+  showDefaultTooltip?: boolean;
   showMineruOptions?: boolean;
   showPaddleocrOptions?: boolean;
   testId?: string;
@@ -96,7 +98,7 @@ export function LayoutRecognizeFormField({
                 })}
               >
                 <FormLabel
-                  tooltip={t('layoutRecognizeTip')}
+                  tooltip={showDefaultTooltip ? t('layoutRecognizeTip') : undefined}
                   className={cn('text-sm text-text-secondary whitespace-wrap', {
                     ['w-1/4']: horizontal,
                   })}

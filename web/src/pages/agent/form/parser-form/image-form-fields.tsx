@@ -1,3 +1,4 @@
+import { ParseDocumentType } from '@/components/layout-recognize-form-field';
 import { RAGFlowFormItem } from '@/components/ragflow-form';
 import { Textarea } from '@/components/ui/textarea';
 import { buildOptions } from '@/utils/form';
@@ -26,7 +27,10 @@ export function ImageFormFields({ prefix }: CommonProps) {
   });
 
   const languageShown = useMemo(() => {
-    return !isEmpty(parseMethod) && parseMethod !== ImageParseMethod.OCR;
+    return (
+      !isEmpty(parseMethod) &&
+      parseMethod !== ImageParseMethod.OCR
+    );
   }, [parseMethod]);
 
   useEffect(() => {

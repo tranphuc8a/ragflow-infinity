@@ -32,7 +32,7 @@ export function SpreadsheetFormFields({ prefix }: CommonProps) {
     name: parseMethodName,
   });
 
-  // Spreadsheet only supports DeepDOC and TCADPParser
+  // Spreadsheet supports DeepDOC and TCADPParser.
   const optionsWithoutLLM = [
     { label: ParseDocumentType.DeepDOC, value: ParseDocumentType.DeepDOC },
     {
