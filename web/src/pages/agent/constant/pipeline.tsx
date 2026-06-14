@@ -97,7 +97,6 @@ export enum TokenizerSearchMethod {
 
 export enum ImageParseMethod {
   OCR = 'ocr',
-  DoXA = ParseDocumentType.DoXA,
 }
 
 export enum TokenizerFields {
@@ -259,6 +258,20 @@ export const initialExtractorValues = {
   field_name: ContextGeneratorFieldName.Summary,
   outputs: {
     chunks: { type: 'Array<Object>', value: [] },
+  },
+};
+
+export const initialDoxaParserValues = {
+  file_path: '',
+  doxa_token: '',
+  doxa_url: '',
+  doxa_ipaas_token: '',
+  parse_method: 'default',
+  language: 'Chinese',
+  outputs: {
+    text_sections: { type: 'Array<String>', value: [] },
+    sections_count: { type: 'Number', value: 0 },
+    status: { type: 'String', value: '' },
   },
 };
 

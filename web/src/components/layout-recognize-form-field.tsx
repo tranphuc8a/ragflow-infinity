@@ -5,7 +5,6 @@ import { cn } from '@/lib/utils';
 import { camelCase } from 'lodash';
 import { ReactNode, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { DoxaOptionsFormField } from './doxa-options-form-field';
 import { MinerUOptionsFormField } from './mineru-options-form-field';
 import { SelectWithSearch } from './originui/select-with-search';
 import { PaddleOCROptionsFormField } from './paddleocr-options-form-field';
@@ -22,7 +21,6 @@ export const enum ParseDocumentType {
   PlainText = 'Plain Text',
   Docling = 'Docling',
   TCADPParser = 'TCADP Parser',
-  DoXA = 'DoXA',
 }
 
 export function LayoutRecognizeFormField({
@@ -32,7 +30,6 @@ export function LayoutRecognizeFormField({
   label,
   showDefaultTooltip = true,
   showMineruOptions = true,
-  showDoxaOptions = true,
   showPaddleocrOptions = true,
   testId,
 }: {
@@ -42,7 +39,6 @@ export function LayoutRecognizeFormField({
   label?: ReactNode;
   showDefaultTooltip?: boolean;
   showMineruOptions?: boolean;
-  showDoxaOptions?: boolean;
   showPaddleocrOptions?: boolean;
   testId?: string;
 }) {
@@ -59,7 +55,6 @@ export function LayoutRecognizeFormField({
           ParseDocumentType.PlainText,
           ParseDocumentType.Docling,
           ParseDocumentType.TCADPParser,
-          ParseDocumentType.DoXA,
         ].map((x) => ({
           label: x === ParseDocumentType.PlainText ? t(camelCase(x)) : x,
           value: x,
@@ -125,9 +120,6 @@ export function LayoutRecognizeFormField({
                 <FormMessage />
               </div>
             </FormItem>
-            {showDoxaOptions && (
-              <DoxaOptionsFormField parserMethodFieldName={name} />
-            )}
             {showMineruOptions && <MinerUOptionsFormField />}
             {showPaddleocrOptions && <PaddleOCROptionsFormField />}
           </>
